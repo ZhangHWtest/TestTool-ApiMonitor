@@ -1,6 +1,5 @@
 package com.apimonitor.common.service;
 
-
 import com.apimonitor.common.entity.HttpSequence;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,7 +9,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-05
+ * @since 2020-03-06
  */
 public interface HttpSequenceService extends IService<HttpSequence> {
 

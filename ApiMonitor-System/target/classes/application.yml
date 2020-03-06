@@ -31,4 +31,4 @@ mybatis-plus:
 jwt:
   config:
     key: YXBp
-    ttl: 600000
+    ttl: 3600000

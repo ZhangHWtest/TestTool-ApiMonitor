@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -26,18 +25,16 @@ public class HttpRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 父主键（即http_sequence表的guid）
+     * http序列id
      */
-    private String pguid;
-
-    /**
-     * 主键
-     */
-    private String guid;
+    private Integer requestId;
 
     /**
      * 序号
@@ -52,7 +49,6 @@ public class HttpRequest implements Serializable {
     /**
      * HTTP类型（GET, HEAD, POST, PUT, DELETE）
      */
-    @TableField("httpMethod")
     private String httpMethod;
 
     /**
@@ -68,13 +64,11 @@ public class HttpRequest implements Serializable {
     /**
      * 最大连接时间
      */
-    @TableField("maxConnectionSeconds")
     private Integer maxConnectionSeconds;
 
     /**
      * 结果校验类型（CONTAINS, DOESNT_CONTAIN, STATUSCODE, DEFAULT）
      */
-    @TableField("conditionType")
     private String conditionType;
 
     /**
@@ -83,10 +77,9 @@ public class HttpRequest implements Serializable {
     private String condition;
 
     /**
-     * 返回结果的格式（XML, JSON）
+     * 返回结果的格式（0:XML, 1:JSON）
      */
-    @TableField("resultType")
-    private String resultType;
+    private Integer resultType;
 
     /**
      * 变量定义，格式（key::value\nkey::value）
@@ -106,7 +99,6 @@ public class HttpRequest implements Serializable {
     /**
      * 创建时间
      */
-    @TableField("createTime")
     private LocalDateTime createTime;
 
 

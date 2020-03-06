@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -30,19 +29,23 @@ public class HttpSequenceLog implements Serializable {
     private Integer id;
 
     /**
-     * 父主键（http_sequence表guid）
+     * http序列表
      */
-    private String pguid;
+    private Integer sequenceId;
+
+    /**
+     * 系统id
+     */
+    private Integer systemId;
 
     /**
      * 状态（0-失败；1-成功）
      */
-    private Boolean status;
+    private Integer status;
 
     /**
      * 请求耗时
      */
-    @TableField("costTime")
     private Integer costTime;
 
     /**
@@ -53,7 +56,6 @@ public class HttpSequenceLog implements Serializable {
     /**
      * 创建时间
      */
-    @TableField("createTime")
     private LocalDateTime createTime;
 
 

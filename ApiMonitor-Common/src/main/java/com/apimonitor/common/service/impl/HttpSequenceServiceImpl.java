@@ -1,6 +1,5 @@
 package com.apimonitor.common.service.impl;
 
-
 import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.mapper.HttpSequenceMapper;
 import com.apimonitor.common.service.HttpSequenceService;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-05
+ * @since 2020-03-06
  */
 @Service
 public class HttpSequenceServiceImpl extends ServiceImpl<HttpSequenceMapper, HttpSequence> implements HttpSequenceService {

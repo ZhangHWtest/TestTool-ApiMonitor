@@ -1,19 +1,9 @@
 package com.apimonitor.common.controller;
 
 
-
-import com.apimonitor.common.entity.HttpSequence;
-import com.apimonitor.common.service.HttpSequenceService;
-import com.apimonitor.system.entity.resultException.Result;
-import com.apimonitor.system.entity.resultException.ResultCode;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * <p>
@@ -21,13 +11,11 @@ import java.util.List;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-06
  */
 @RestController
-@RequestMapping("/system")
+@RequestMapping("/http-system")
 public class HttpSystemController {
-
-
 
 }
 

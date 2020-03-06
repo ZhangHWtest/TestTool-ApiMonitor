@@ -1,4 +1,4 @@
-package com.apimonitor.system.entity.ResultModel;
+package com.apimonitor.system.entity.Model;
 
 public class UserPassword {
 

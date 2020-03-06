@@ -1,8 +1,8 @@
 package com.apimonitor.system.controller;
 
 
-import com.apimonitor.system.entity.ResultModel.Findbody;
-import com.apimonitor.system.entity.ResultModel.UserPassword;
+import com.apimonitor.system.entity.Model.Findbody;
+import com.apimonitor.system.entity.Model.UserPassword;
 import com.apimonitor.system.entity.TbUser;
 import com.apimonitor.system.entity.resultException.Result;
 import com.apimonitor.system.entity.resultException.ResultCode;
@@ -12,14 +12,11 @@ import com.apimonitor.system.utils.JwtUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.xxl.job.core.handler.annotation.JobHandler;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.*;
 

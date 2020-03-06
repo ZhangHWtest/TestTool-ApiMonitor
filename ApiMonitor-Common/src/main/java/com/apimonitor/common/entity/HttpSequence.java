@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-05
+ * @since 2020-03-06
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,33 +25,36 @@ public class HttpSequence implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 主键
+     */
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 主键
+     * 系统id
      */
-    private String guid;
+    private Integer systemId;
 
     /**
-     * 所属系统
+     * 接口id
      */
-    private String groupName;
+    private Integer requestId;
 
     /**
-     * 类型（0:单个SINGLE, 1:群组SEQUENCE）
+     * job群组id
      */
-    private Integer type;
+    private String jobGroupId;
 
     /**
-     * 名称
+     * job群组名称
      */
-    private String httpName;
+    private String jobGroupName;
 
     /**
-     * 备注
+     * job_id
      */
-    private String remark;
+    private Integer jobId;
 
     /**
      * job名称
@@ -59,14 +62,24 @@ public class HttpSequence implements Serializable {
     private String jobName;
 
     /**
+     * 监控频率，默认30,单位秒
+     */
+    private Integer frequency;
+
+    /**
+     * 类型（0:单个SINGLE, 1:群组SEQUENCE）
+     */
+    private Integer type;
+
+    /**
      * 是否启动监控（0:未启动，1:运行中）
      */
     private Integer status;
 
     /**
-     * 监控频率，默认THIRTY30秒
+     * 备注
      */
-    private String frequency;
+    private String remark;
 
     /**
      * 创建时间

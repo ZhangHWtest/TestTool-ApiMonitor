@@ -1,6 +1,5 @@
 package com.apimonitor.common.service.impl;
 
-
 import com.apimonitor.common.entity.HttpRequestLog;
 import com.apimonitor.common.mapper.HttpRequestLogMapper;
 import com.apimonitor.common.service.HttpRequestLogService;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-06
  */
 @Service
 public class HttpRequestLogServiceImpl extends ServiceImpl<HttpRequestLogMapper, HttpRequestLog> implements HttpRequestLogService {

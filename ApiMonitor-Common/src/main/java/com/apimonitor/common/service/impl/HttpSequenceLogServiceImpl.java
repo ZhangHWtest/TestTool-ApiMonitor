@@ -1,6 +1,5 @@
 package com.apimonitor.common.service.impl;
 
-
 import com.apimonitor.common.entity.HttpSequenceLog;
 import com.apimonitor.common.mapper.HttpSequenceLogMapper;
 import com.apimonitor.common.service.HttpSequenceLogService;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-06
  */
 @Service
 public class HttpSequenceLogServiceImpl extends ServiceImpl<HttpSequenceLogMapper, HttpSequenceLog> implements HttpSequenceLogService {
