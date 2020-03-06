@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.QrtzJobDetails;
-import com.apimonitor.admin.mapper.QrtzJobDetailsMapper;
-import com.apimonitor.system.service.QrtzJobDetailsService;
+
+import com.apimonitor.common.entity.QrtzJobDetails;
+import com.apimonitor.common.mapper.QrtzJobDetailsMapper;
+import com.apimonitor.common.service.QrtzJobDetailsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

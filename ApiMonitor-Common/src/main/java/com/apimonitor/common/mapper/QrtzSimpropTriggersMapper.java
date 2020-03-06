@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.QrtzSimpropTriggers;
+import com.apimonitor.common.entity.QrtzSimpropTriggers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

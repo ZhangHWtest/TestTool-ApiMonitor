@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-03-03
  */
 @RestController
-@RequestMapping("/tb-user-role")
+@RequestMapping("/userrole")
 public class TbUserRoleController {
 
 }

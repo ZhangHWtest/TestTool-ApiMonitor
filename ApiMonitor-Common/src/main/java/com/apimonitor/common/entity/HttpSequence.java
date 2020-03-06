@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.time.LocalDateTime;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -37,17 +36,17 @@ public class HttpSequence implements Serializable {
     /**
      * 所属系统
      */
-    private String group;
+    private String groupName;
 
     /**
-     * 类型（SINGLE, SEQUENCE）
+     * 类型（0:单个SINGLE, 1:群组SEQUENCE）
      */
-    private String type;
+    private Integer type;
 
     /**
      * 名称
      */
-    private String name;
+    private String httpName;
 
     /**
      * 备注
@@ -57,13 +56,12 @@ public class HttpSequence implements Serializable {
     /**
      * job名称
      */
-    @TableField("jobName")
     private String jobName;
 
     /**
-     * 是否启动监控（0-不启动，1-启动）
+     * 是否启动监控（0:未启动，1:运行中）
      */
-    private Boolean enabled;
+    private Integer status;
 
     /**
      * 监控频率，默认THIRTY30秒
@@ -73,7 +71,6 @@ public class HttpSequence implements Serializable {
     /**
      * 创建时间
      */
-    @TableField("createTime")
     private LocalDateTime createTime;
 
     /**

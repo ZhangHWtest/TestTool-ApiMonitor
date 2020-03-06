@@ -11,7 +11,13 @@
     <name>ApiMonitor-Common</name>
     <packaging>jar</packaging>
     <url>http://maven.apache.org</url>
+
     <dependencies>
+        <dependency>
+            <groupId>com.apimonitor</groupId>
+            <artifactId>ApiMonitor-System</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>ApiMonitor-Common</finalName>

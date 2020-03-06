@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequest;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

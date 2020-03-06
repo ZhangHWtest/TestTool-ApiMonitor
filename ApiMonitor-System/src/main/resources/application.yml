@@ -19,7 +19,16 @@ spring:
 
 server:
   port: 10080
+mybatis-plus:
+  # xml
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.apimonitor.system.entity
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# jwt配置 key:Base64加密后的字符   ttl过期时间(单位毫秒) 1秒=1000毫秒
 jwt:
   config:
     key: YXBp
-    ttl: 3600
+    ttl: 600000

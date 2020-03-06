@@ -1,6 +1,6 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.admin.entity.QrtzPausedTriggerGrps;
+import com.apimonitor.common.entity.QrtzPausedTriggerGrps;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

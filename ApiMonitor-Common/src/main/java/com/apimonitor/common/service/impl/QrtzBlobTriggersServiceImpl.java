@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.QrtzBlobTriggers;
-import com.apimonitor.admin.mapper.QrtzBlobTriggersMapper;
-import com.apimonitor.system.service.QrtzBlobTriggersService;
+
+import com.apimonitor.common.entity.QrtzBlobTriggers;
+import com.apimonitor.common.mapper.QrtzBlobTriggersMapper;
+import com.apimonitor.common.service.QrtzBlobTriggersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

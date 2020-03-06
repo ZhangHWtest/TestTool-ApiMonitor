@@ -1,6 +1,6 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.admin.entity.HttpSystem;
+import com.apimonitor.common.entity.HttpSystem;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

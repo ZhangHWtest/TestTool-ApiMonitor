@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.QrtzCalendars;
+import com.apimonitor.common.entity.QrtzCalendars;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

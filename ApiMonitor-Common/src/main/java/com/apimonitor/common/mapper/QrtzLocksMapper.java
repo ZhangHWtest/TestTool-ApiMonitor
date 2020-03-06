@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.QrtzLocks;
+import com.apimonitor.common.entity.QrtzLocks;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

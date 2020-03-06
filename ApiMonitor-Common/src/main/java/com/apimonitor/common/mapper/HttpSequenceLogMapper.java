@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.HttpSequenceLog;
+import com.apimonitor.common.entity.HttpSequenceLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

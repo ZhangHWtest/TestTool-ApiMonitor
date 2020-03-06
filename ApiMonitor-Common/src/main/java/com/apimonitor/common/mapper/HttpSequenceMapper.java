@@ -1,6 +1,7 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.HttpSequence;
+
+import com.apimonitor.common.entity.HttpSequence;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,7 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author zhwtest
- * @since 2020-03-03
+ * @since 2020-03-05
  */
 public interface HttpSequenceMapper extends BaseMapper<HttpSequence> {
 

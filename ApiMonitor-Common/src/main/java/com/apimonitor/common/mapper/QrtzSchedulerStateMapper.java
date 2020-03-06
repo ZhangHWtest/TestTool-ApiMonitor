@@ -1,6 +1,6 @@
 package com.apimonitor.common.mapper;
 
-import com.apimonitor.admin.entity.QrtzSchedulerState;
+import com.apimonitor.common.entity.QrtzSchedulerState;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

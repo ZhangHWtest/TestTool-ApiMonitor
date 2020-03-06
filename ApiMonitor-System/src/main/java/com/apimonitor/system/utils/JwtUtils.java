@@ -32,7 +32,9 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256,key);
 
         //3、根据map设置claims
-        jwtBuilder.setClaims(map);
+        for(Map.Entry<String,Object> entry: map.entrySet()){
+            jwtBuilder.claim(entry.getKey(),entry.getValue());
+        }
         jwtBuilder.setExpiration(new Date(exp));
         //4、创建token
         String token=jwtBuilder.compact();

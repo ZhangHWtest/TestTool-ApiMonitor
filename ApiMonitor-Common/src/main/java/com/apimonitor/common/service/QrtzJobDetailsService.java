@@ -1,6 +1,6 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.admin.entity.QrtzJobDetails;
+import com.apimonitor.common.entity.QrtzJobDetails;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

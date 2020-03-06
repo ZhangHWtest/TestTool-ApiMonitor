@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.HttpRequestLog;
-import com.apimonitor.admin.mapper.HttpRequestLogMapper;
-import com.apimonitor.system.service.HttpRequestLogService;
+
+import com.apimonitor.common.entity.HttpRequestLog;
+import com.apimonitor.common.mapper.HttpRequestLogMapper;
+import com.apimonitor.common.service.HttpRequestLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

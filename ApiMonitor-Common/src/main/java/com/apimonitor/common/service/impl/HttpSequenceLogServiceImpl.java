@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.HttpSequenceLog;
-import com.apimonitor.admin.mapper.HttpSequenceLogMapper;
-import com.apimonitor.system.service.HttpSequenceLogService;
+
+import com.apimonitor.common.entity.HttpSequenceLog;
+import com.apimonitor.common.mapper.HttpSequenceLogMapper;
+import com.apimonitor.common.service.HttpSequenceLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

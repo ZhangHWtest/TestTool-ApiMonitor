@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.QrtzSchedulerState;
-import com.apimonitor.admin.mapper.QrtzSchedulerStateMapper;
-import com.apimonitor.system.service.QrtzSchedulerStateService;
+
+import com.apimonitor.common.entity.QrtzSchedulerState;
+import com.apimonitor.common.mapper.QrtzSchedulerStateMapper;
+import com.apimonitor.common.service.QrtzSchedulerStateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

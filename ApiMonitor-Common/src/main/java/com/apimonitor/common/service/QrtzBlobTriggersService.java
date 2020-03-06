@@ -1,6 +1,6 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.admin.entity.QrtzBlobTriggers;
+import com.apimonitor.common.entity.QrtzBlobTriggers;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

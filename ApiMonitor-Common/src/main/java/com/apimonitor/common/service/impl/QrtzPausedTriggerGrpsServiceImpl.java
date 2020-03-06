@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.QrtzPausedTriggerGrps;
-import com.apimonitor.admin.mapper.QrtzPausedTriggerGrpsMapper;
-import com.apimonitor.system.service.QrtzPausedTriggerGrpsService;
+
+import com.apimonitor.common.entity.QrtzPausedTriggerGrps;
+import com.apimonitor.common.mapper.QrtzPausedTriggerGrpsMapper;
+import com.apimonitor.common.service.QrtzPausedTriggerGrpsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

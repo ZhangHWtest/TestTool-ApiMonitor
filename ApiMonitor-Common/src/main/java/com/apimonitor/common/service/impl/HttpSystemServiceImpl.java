@@ -1,8 +1,9 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.admin.entity.HttpSystem;
-import com.apimonitor.admin.mapper.HttpSystemMapper;
-import com.apimonitor.system.service.HttpSystemService;
+
+import com.apimonitor.common.entity.HttpSystem;
+import com.apimonitor.common.mapper.HttpSystemMapper;
+import com.apimonitor.common.service.HttpSystemService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
