@@ -3,18 +3,19 @@ package com.apimonitor.common.mapper;
 
 import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.entity.HttpSystem;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface HttpSequenceMapper {
+public interface HttpSequenceMapper extends BaseMapper<HttpSequence> {
 
-	@Insert("INSERT INTO http_sequence(guid,`group`,`type`,`name`,remark,jobName,frequency)  VALUES("
-			+"#{httpSequence.guid},#{httpSequence.group},#{httpSequence.type},"
-			+ "#{httpSequence.name},#{httpSequence.remark},#{httpSequence.jobName},#{httpSequence.frequency})")
-	void insert(@Param("httpSequence") HttpSequence httpSequence);
+//	@Insert("INSERT INTO http_sequence(guid,`group`,`type`,`name`,remark,jobName,frequency)  VALUES("
+//			+"#{httpSequence.guid},#{httpSequence.group},#{httpSequence.type},"
+//			+ "#{httpSequence.name},#{httpSequence.remark},#{httpSequence.jobName},#{httpSequence.frequency})")
+//	void insert(@Param("httpSequence") HttpSequence httpSequence);
 
 	@Update("update http_sequence t set t.`group`=#{httpSequence.group},t.`type`=#{httpSequence.type},"
 			+ "t.`name`=#{httpSequence.name},t.remark=#{httpSequence.remark},t.frequency=#{httpSequence.frequency} WHERE t.`guid`= #{httpSequence.guid}")

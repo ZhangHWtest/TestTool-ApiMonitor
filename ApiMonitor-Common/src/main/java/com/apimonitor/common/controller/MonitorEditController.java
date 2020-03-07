@@ -7,6 +7,7 @@ import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.PostManResolver;
 import com.apimonitor.common.entity.*;
+import com.apimonitor.system.entity.Model.Findbody;
 import com.apimonitor.system.entity.resultException.Result;
 import com.apimonitor.system.entity.resultException.ResultCode;
 import com.github.pagehelper.StringUtil;
@@ -23,7 +24,6 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-// @RequestMapping("/monitor")
 public class MonitorEditController {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(MonitorEditController.class);
@@ -34,20 +34,40 @@ public class MonitorEditController {
 	@Autowired
 	private HttpRequestService httpRequestService;
 
+	/**
+	 * 添加单监视器
+	 * @param map
+	 * @return
+	 */
 
-    @RequestMapping("/addSingleMonitor")
-    public Result addSingleMonitor(ModelMap map) {
-    	HttpRequestForm form = new HttpRequestForm();
-    	map.put("form", form);
-    	//return "monitor_add_single";
+	/**
+	 * 整理过的！！！！
+	 */
+	@PostMapping("/addGroup")
+	public Result addGroup(@RequestBody HttpSystem systemName){
+		httpSequenceService.addHttpSystem(systemName.getName());
 		return  new Result(ResultCode.SUCCESS);
-    }
-    
-	@ResponseBody
-    @RequestMapping(value="/addGroup",method= RequestMethod.POST)
-    public boolean addGroup(@RequestParam("systemName") String systemName){
-		return httpSequenceService.addHttpSystem(systemName);
-    }
+	}
+
+	// ------------------------		------------------------		------------------------
+
+	@PostMapping("/addSingleMonitor")
+	public Result addSingleMonitor(ModelMap map) {
+		HttpRequestForm form = new HttpRequestForm();
+		map.put("form", form);
+		return  new Result(ResultCode.SUCCESS);
+	}
+
+//    @RequestMapping("/addSingleMonitor")
+//    public Result addSingleMonitor(ModelMap map) {
+//    	HttpRequestForm form = new HttpRequestForm();
+//    	map.put("form", form);
+//    	//return "monitor_add_single";
+//		return  new Result(ResultCode.SUCCESS);
+//    }
+//
+
+
 
 	@ResponseBody
     @RequestMapping(value="/getGroups")

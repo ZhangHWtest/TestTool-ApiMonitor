@@ -10,6 +10,7 @@ import com.apimonitor.common.quartz.DynamicJobManager;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class HttpRequestServiceImpl implements HttpRequestService {
+public class HttpRequestServiceImpl extends ServiceImpl<HttpRequestMapper, HttpRequest> implements HttpRequestService {
 
 
 

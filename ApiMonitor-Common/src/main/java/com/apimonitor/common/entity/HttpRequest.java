@@ -1,12 +1,22 @@
 package com.apimonitor.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.pagehelper.StringUtil;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 
-
-public class HttpRequest {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("http_request")
+public class HttpRequest implements Serializable {
 
     private static final long serialVersionUID = 1826152029135090793L;
 
@@ -35,8 +45,8 @@ public class HttpRequest {
 	
 	public enum ResultType {
 		XML, JSON
-	}    
-	
+	}
+	@TableId(value = "id", type = IdType.AUTO)
 	private int id;
 	
 	private String guid;

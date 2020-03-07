@@ -37,13 +37,7 @@ public class ApiMonitorController {
 		}
 		return new Result(ResultCode.FAIL);
 	}
-    
-    @RequestMapping("/monitorList")
-    public String monitorList(ModelMap map) {
-		List<Map<String,Object>> list = httpSequenceService.getMonitorList();
-		map.addAttribute("monitorList", list);
-    	return "monitor_list";
-    }
+
 
     @RequestMapping("/monitorLog")
     public String monitorLog(ModelMap map, HttpServletRequest request) {

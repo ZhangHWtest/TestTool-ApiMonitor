@@ -24,21 +24,16 @@ server:
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
     ##默认情况下，仅会压缩2048字节以上的内容
     min-response-size: 2048
-#mybatis start
-mybatis:
-  config-location: classpath:/mybatis-config.xml
-#mybatis end
 
-#Allow scheduler execute or not, default is true
-#When want to stop the scheduler execution, set the value false
-scheduler:
-  auto.startup: true
-  # 自动清理过期的监控日志, 凌晨2点
-  clean:
-    monitor:
-      log:
-        cron:
-          expression: 0 0 2 * * ?
-  # 保留几天的日志
-        keep:
-          day: 10
+mybatis-plus:
+  # xml
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.apimonitor.common.entity
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#mybatis start
+#mybatis:
+#  config-location: classpath:/mybatis-config.xml
+#mybatis end

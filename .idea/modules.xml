@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ApiMonitor-Common/ApiMonitor-Common.iml" filepath="$PROJECT_DIR$/ApiMonitor-Common/ApiMonitor-Common.iml" />
       <module fileurl="file://$PROJECT_DIR$/ApiMonitor-System/ApiMonitor-System.iml" filepath="$PROJECT_DIR$/ApiMonitor-System/ApiMonitor-System.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MybatisPlus-code/MybatisPlus-code.iml" filepath="$PROJECT_DIR$/MybatisPlus-code/MybatisPlus-code.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/TestTool-ApiMonitor.iml" filepath="$PROJECT_DIR$/.idea/TestTool-ApiMonitor.iml" />
     </modules>
   </component>

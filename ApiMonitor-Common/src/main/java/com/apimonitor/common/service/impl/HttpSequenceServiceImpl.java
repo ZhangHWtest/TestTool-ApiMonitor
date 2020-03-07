@@ -9,6 +9,7 @@ import com.apimonitor.common.entity.MonitorFrequency;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.MathUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class HttpSequenceServiceImpl implements HttpSequenceService{
+public class HttpSequenceServiceImpl extends ServiceImpl<HttpSequenceMapper, HttpSequence> implements HttpSequenceService{
 
 	@Autowired
 	private HttpSequenceMapper httpSequenceMapper;
