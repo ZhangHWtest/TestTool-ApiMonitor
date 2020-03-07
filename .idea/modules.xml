@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/ApiMonitor-Common/ApiMonitor-Common.iml" filepath="$PROJECT_DIR$/ApiMonitor-Common/ApiMonitor-Common.iml" />
       <module fileurl="file://$PROJECT_DIR$/ApiMonitor-System/ApiMonitor-System.iml" filepath="$PROJECT_DIR$/ApiMonitor-System/ApiMonitor-System.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/TestTool-ApiMonitor.iml" filepath="$PROJECT_DIR$/.idea/TestTool-ApiMonitor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TestTool-ApiMonitor-common/TestTool-ApiMonitor-common.iml" filepath="$PROJECT_DIR$/TestTool-ApiMonitor-common/TestTool-ApiMonitor-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TestTool-ApiMonitor-system/TestTool-ApiMonitor-system.iml" filepath="$PROJECT_DIR$/TestTool-ApiMonitor-system/TestTool-ApiMonitor-system.iml" />
     </modules>
   </component>
 </project>

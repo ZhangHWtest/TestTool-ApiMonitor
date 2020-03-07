@@ -20,7 +20,7 @@
 	</plugins>
 	
 	 <mappers>
-        <package name="com.apimonitor.common.dao"/>
+        <package name="com.apimonitor.common.mapper"/>
     </mappers>
     
     

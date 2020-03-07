@@ -19,3 +19,12 @@ spring:
 
 server:
   port: 10081
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    ##默认情况下，仅会压缩2048字节以上的内容
+    min-response-size: 2048
+#mybatis start
+mybatis:
+  config-location: classpath:/mybatis-config.xml
+#mybatis end
