@@ -19,9 +19,9 @@
 	    </plugin>
 	</plugins>
 	
-	 <mappers>
-        <package name="com.apimonitor.common.mapper"/>
-    </mappers>
+	 <!--<mappers>-->
+        <!--<package name="com.apimonitor.common.mapper"/>-->
+    <!--</mappers>-->
     
     
 </configuration>

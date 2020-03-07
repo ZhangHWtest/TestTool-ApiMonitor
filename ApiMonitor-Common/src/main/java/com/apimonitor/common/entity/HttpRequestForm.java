@@ -260,10 +260,5 @@ public class HttpRequestForm {
 	public void setFrequency(MonitorFrequency frequency) {
 		this.frequency = frequency;
 	}
-	
-	
-	
-	
-	
-   
+
 }

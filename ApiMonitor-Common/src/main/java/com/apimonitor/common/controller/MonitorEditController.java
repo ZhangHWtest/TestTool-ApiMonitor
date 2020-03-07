@@ -4,6 +4,7 @@ package com.apimonitor.common.controller;
 import com.apimonitor.common.http.client.HttpSequenceHandle;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
+import com.apimonitor.common.service.HttpSystemService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.PostManResolver;
 import com.apimonitor.common.entity.*;
@@ -34,46 +35,76 @@ public class MonitorEditController {
 	@Autowired
 	private HttpRequestService httpRequestService;
 
+	@Autowired
+	private HttpSystemService httpSystemService;
+// ------------------------		------------------------		------------------------
+
+	/**
+	 * 整理过的！！！！
+	 */
+// ------------------------		------------------------		------------------------
+	/**
+	 * 添加群组
+	 */
+	@PostMapping("/addGroup")
+	public Result addGroup(@RequestBody HttpSystem systemName){
+		if(httpSystemService.save(systemName)) {
+			return new Result(ResultCode.SUCCESS);
+		}
+		return new Result(ResultCode.FAIL);
+	}
+	/**
+	 * 获取群组
+	 */
+	@GetMapping("/getGroups")
+	public Result getGroup(){
+		List<HttpSystem> list =httpSystemService.list();
+
+		return new Result(ResultCode.SUCCESS,list);
+	}
+
+	/**
+	 * 添加单个api
+	 */
+	@PostMapping("/createSingleMonitor")
+	public Result createSingleMonitor(@RequestBody HttpRequestForm form){
+		try{
+			//添加
+			if(StringUtil.isEmpty(form.getGuid())){
+				HttpSequence httpSequence = HttpSequence.getHttpSequence(form);
+				httpSequence.setGuid(GuidGenerator.generate());
+				HttpRequest httpRequest = HttpRequest.getHttpRequest(form);
+				httpRequest.setGuid(GuidGenerator.generate());
+				httpRequest.setPguid(httpSequence.getGuid());
+				httpSequenceService.insert(httpSequence);
+				httpRequestService.insertHttpRequest(httpRequest);
+			}else{
+				//修改
+				HttpSequence httpSequence = HttpSequence.getHttpSequence(form);
+				HttpRequest httpRequest = HttpRequest.getHttpRequest(form);
+				httpSequenceService.update(httpSequence);
+				httpRequestService.updateHttpRequest(httpRequest);
+			}
+			return new Result(ResultCode.SUCCESS);
+		}catch(Exception e){
+			LOGGER.error("错误日志",e);
+			return new Result(ResultCode.FAIL);
+		}
+	}
+
+	// ------------------------		------------------------		------------------------
+
 	/**
 	 * 添加单监视器
 	 * @param map
 	 * @return
 	 */
-
-	/**
-	 * 整理过的！！！！
-	 */
-	@PostMapping("/addGroup")
-	public Result addGroup(@RequestBody HttpSystem systemName){
-		httpSequenceService.addHttpSystem(systemName.getName());
-		return  new Result(ResultCode.SUCCESS);
-	}
-
-	// ------------------------		------------------------		------------------------
-
 	@PostMapping("/addSingleMonitor")
 	public Result addSingleMonitor(ModelMap map) {
 		HttpRequestForm form = new HttpRequestForm();
 		map.put("form", form);
 		return  new Result(ResultCode.SUCCESS);
 	}
-
-//    @RequestMapping("/addSingleMonitor")
-//    public Result addSingleMonitor(ModelMap map) {
-//    	HttpRequestForm form = new HttpRequestForm();
-//    	map.put("form", form);
-//    	//return "monitor_add_single";
-//		return  new Result(ResultCode.SUCCESS);
-//    }
-//
-
-
-
-	@ResponseBody
-    @RequestMapping(value="/getGroups")
-    public List<HttpSystem> addGroup(){
-		return httpSequenceService.getAllSystem();
-    }
 
 	@ResponseBody
     @RequestMapping(value="/saveSingleMonitor",method= RequestMethod.POST)
