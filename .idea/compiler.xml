@@ -13,6 +13,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="apimonitor" target="1.8" />
       <module name="ApiMonitor-Common" target="1.8" />
       <module name="ApiMonitor-System" target="1.8" />
       <module name="TestTool-ApiMonitor" target="1.8" />
@@ -26,6 +27,7 @@
       <module name="ApiMonitor-System" options="-parameters" />
       <module name="TestTool-ApiMonitor-common" options="-parameters" />
       <module name="TestTool-ApiMonitor-system" options="-parameters" />
+      <module name="apimonitor" options="-parameters" />
     </option>
   </component>
 </project>
