@@ -1,7 +1,7 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpSequence;
 
 import java.util.List;
 import java.util.Map;

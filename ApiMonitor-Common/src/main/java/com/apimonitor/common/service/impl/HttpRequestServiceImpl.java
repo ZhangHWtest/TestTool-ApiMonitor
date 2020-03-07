@@ -1,11 +1,11 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.common.dao.HttpRequestLogMapper;
-import com.apimonitor.common.dao.HttpRequestMapper;
+import com.apimonitor.common.mapper.HttpRequestLogMapper;
+import com.apimonitor.common.mapper.HttpRequestMapper;
 import com.apimonitor.common.http.client.HttpSequenceHandle;
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestLog;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestLog;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.quartz.DynamicJobManager;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;

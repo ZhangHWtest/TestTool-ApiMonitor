@@ -25,6 +25,7 @@
     <modules>
         <module>ApiMonitor-System</module>
         <module>ApiMonitor-Common</module>
+        <module>MybatisPlus-CodeGenerator</module>
     </modules>
 
     <dependencyManagement>

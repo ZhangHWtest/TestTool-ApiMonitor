@@ -1,7 +1,7 @@
 package com.apimonitor.common.util;
 
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpSequence;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONReader;

@@ -4,7 +4,7 @@ package com.apimonitor.common.quartz;
 
 import com.apimonitor.common.context.BeanProvider;
 import com.apimonitor.common.job.HttpMonitoringJob;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.service.HttpRequestService;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.SchedulerException;

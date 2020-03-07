@@ -14,9 +14,9 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import com.apimonitor.common.model.Application;
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestLog;
+import com.apimonitor.common.entity.Application;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestLog;
 import com.apimonitor.common.util.XmlUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;

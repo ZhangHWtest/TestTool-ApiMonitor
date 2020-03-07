@@ -3,7 +3,6 @@ package com.apimonitor.common.controller;
 
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
-import com.apimonitor.system.entity.Model.Findbody;
 import com.apimonitor.system.entity.resultException.Result;
 import com.apimonitor.system.entity.resultException.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,16 @@ public class ApiMonitorController {
 	@Autowired
 	private HttpSequenceService httpSequenceService;
 
+	/**
+	 * 查询List
+	 */
 	@PostMapping("/getMonitorList")
-	public Result getMonitorList(@RequestBody Findbody findbody, HttpServletRequest request) {
-		
-
-		return new Result(ResultCode.SUCCESS);
+	public Result getMonitorList() {
+		List<Map<String,Object>> list = httpSequenceService.getMonitorList();
+		if(!list.isEmpty()){
+			return new Result(ResultCode.SUCCESS,list);
+		}
+		return new Result(ResultCode.FAIL);
 	}
     
     @RequestMapping("/monitorList")

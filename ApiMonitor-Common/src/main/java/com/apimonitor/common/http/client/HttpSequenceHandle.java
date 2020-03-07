@@ -1,10 +1,10 @@
 package com.apimonitor.common.http.client;
 
 
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestLog;
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSequenceLog;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestLog;
+import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.entity.HttpSequenceLog;
 import com.github.pagehelper.StringUtil;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;

@@ -6,7 +6,7 @@ import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.PostManResolver;
-import com.apimonitor.common.model.*;
+import com.apimonitor.common.entity.*;
 import com.apimonitor.system.entity.resultException.Result;
 import com.apimonitor.system.entity.resultException.ResultCode;
 import com.github.pagehelper.StringUtil;
