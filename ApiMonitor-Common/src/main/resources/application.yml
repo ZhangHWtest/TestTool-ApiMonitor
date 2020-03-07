@@ -28,3 +28,17 @@ server:
 mybatis:
   config-location: classpath:/mybatis-config.xml
 #mybatis end
+
+#Allow scheduler execute or not, default is true
+#When want to stop the scheduler execution, set the value false
+scheduler:
+  auto.startup: true
+  # 自动清理过期的监控日志, 凌晨2点
+  clean:
+    monitor:
+      log:
+        cron:
+          expression: 0 0 2 * * ?
+  # 保留几天的日志
+        keep:
+          day: 10
