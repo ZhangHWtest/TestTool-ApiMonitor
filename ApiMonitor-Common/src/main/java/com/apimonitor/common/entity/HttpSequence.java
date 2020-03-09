@@ -1,184 +1,182 @@
 package com.apimonitor.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+/**
+ * <p>
+ * http序列表
+ * </p>
+ *
+ * @author zhwtest
+ * @since 2020-03-09
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("http_sequence")
 public class HttpSequence implements Serializable {
 
-	public HttpSequence(){
-		
-	}
-	public static HttpSequence getHttpSequence(HttpRequestForm httpRequestForm){
-		HttpSequence h = new HttpSequence();
-		h.setGuid(httpRequestForm.getPguid());
-		h.setGroup(httpRequestForm.getGroup());
-		h.setType(httpRequestForm.getType());
-		h.setName( httpRequestForm.getName());
-		h.setFrequency(httpRequestForm.getFrequency());
-		h.setRemark(httpRequestForm.getRemark());
-		return h;
-	}
-	
-	public enum MonitorType {
-		SINGLE, SEQUENCE
-	}
-	@TableId(value = "id", type = IdType.AUTO)
-	private int id;
-	
-	private String guid;
-	
-	private String groupName;//所属组
-	
-	private MonitorType type;//类型：SINGLE-单个接口；SEQUENCE-多个接口
-	
-	private String name;
+    private static final long serialVersionUID=1L;
 
-    private MonitorFrequency frequency = MonitorFrequency.THIRTY;//监控频率
-    
-	private String variableResult;
-	
+
+
+
+    public HttpSequence(){
+
+    }
+
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
+
+    /**
+     * 系统ID
+     */
+    private Integer gId;
+
+    /**
+     * 所属系统
+     */
+    private String gName;
+
+    /**
+     * 名称
+     */
+    private String sName;
+
+    /**
+     * job名称
+     */
+    private String jobName;
+
+    /**
+     * 类型（1:单个SINGLE,2:群组 SEQUENCE）
+     */
+    private Integer type;
+
+    /**
+     * 是否启动监控（0-不启动，1-启动）
+     */
+    private Integer enabled;
+
+    /**
+     * 监控频率,默认30
+     */
+    private Integer frequency;
+
+    /**
+     * 备注
+     */
     private String remark;
 
-	private List<HttpRequest> httpRequest;
-	
-	private HashMap<String,String> variableResultMap = new HashMap<String,String>();
-	
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 
-    private String jobName;//quartz调度的job名称
-
-    private boolean enabled;//是否启动监控
-
-    private boolean archived;//是否删除（0-有效，1-删除）
-
-    private Date createTime;
-    
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public List<HttpRequest> getHttpRequest() {
-		return httpRequest;
-	}
-
-	public void setHttpRequest(List<HttpRequest> httpRequest) {
-		this.httpRequest = httpRequest;
-	}
-	
-	public HashMap<String, String> getVariableResultMap() {
-		return variableResultMap;
-	}
-
-	public void setVariableResultMap(HashMap<String, String> variableResultMap) {
-		this.variableResultMap = variableResultMap;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getGuid() {
-		return guid;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-
-	public String getGroup() {
-		return groupName;
-	}
-
-	public void setGroup(String group) {
-		this.groupName = group;
-	}
-
-	public String getVariableResult() {
-		return variableResult;
-	}
-
-	public void setVariableResult(String variableResult) {
-		this.variableResult = variableResult;
-	}
-
-	public MonitorType getType() {
-		return type;
-	}
-
-	public void setType(MonitorType type) {
-		this.type = type;
-	}
-	
-
-	public MonitorFrequency getFrequency() {
-		return frequency;
-	}
-
-	public void setFrequency(MonitorFrequency frequency) {
-		this.frequency = frequency;
-	}
+    /**
+     * 存档（0-有效，1-删除）
+     */
+    private Boolean archived;
 
 
-	public String getJobName() {
-		return jobName;
-	}
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public boolean isEnabled() {
-		return enabled;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
+    public Integer getgId() {
+        return gId;
+    }
 
-    public Date getCreateTime() {
-		return createTime;
-	}
+    public void setgId(Integer gId) {
+        this.gId = gId;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public String getgName() {
+        return gName;
+    }
 
-	public boolean isArchived() {
-		return archived;
-	}
+    public void setgName(String gName) {
+        this.gName = gName;
+    }
 
-	public void setArchived(boolean archived) {
-		this.archived = archived;
-	}
-	
-	public static String getMonitorTypeName(String type){
-		return "SEQUENCE".equals(type) ? "多API":"单API";
-	}
+    public String getsName() {
+        return sName;
+    }
+
+    public void setsName(String sName) {
+        this.sName = sName;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Integer enabled) {
+        this.enabled = enabled;
+    }
+
+    public Integer getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Integer frequency) {
+        this.frequency = frequency;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    public Boolean getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
+    }
 }

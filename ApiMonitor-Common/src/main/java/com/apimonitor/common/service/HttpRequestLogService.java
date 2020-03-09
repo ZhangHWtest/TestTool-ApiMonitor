@@ -1,16 +1,16 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.common.entity.HttpSystem;
+import com.apimonitor.common.entity.HttpRequestLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * 系统名称表 服务类
+ * http请求日志表 服务类
  * </p>
  *
  * @author zhwtest
  * @since 2020-03-09
  */
-public interface HttpSystemService extends IService<HttpSystem> {
+public interface HttpRequestLogService extends IService<HttpRequestLog> {
 
 }

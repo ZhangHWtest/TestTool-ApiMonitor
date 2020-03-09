@@ -5,6 +5,7 @@ import com.apimonitor.common.context.WebSiteMeshFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -16,5 +17,14 @@ public class WebConfig extends WebMvcConfigurationSupport {
         WebSiteMeshFilter siteMeshFilter = new WebSiteMeshFilter();
         fitler.setFilter(siteMeshFilter);
         return fitler;
+    }
+
+    @Override
+    protected void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8080")
+                .allowCredentials(true)
+                .allowedMethods("*")
+                .allowedHeaders("*");
     }
 }

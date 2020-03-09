@@ -1,10 +1,9 @@
 package com.apimonitor.common.quartz;
 
 
-
 import com.apimonitor.common.context.BeanProvider;
-import com.apimonitor.common.job.HttpMonitoringJob;
 import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.job.HttpMonitoringJob;
 import com.apimonitor.common.service.HttpRequestService;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.SchedulerException;
@@ -12,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * @author Shengzhao Li
+ * @author zhanghw
  */
 public class DynamicJobManager {
 
@@ -25,58 +24,61 @@ public class DynamicJobManager {
         return MONITORING_INSTANCE_JOB_NAME_PREFIX + key;
     }
 
-    
-    
     private transient HttpRequestService httpRequestService = BeanProvider.getBean(HttpRequestService.class);
 
     
-    private HttpSequence instance;
+    private HttpSequence httpSequence;
     
-    public DynamicJobManager(HttpSequence instance) {
-        this.instance = instance;
+    public DynamicJobManager(HttpSequence httpSequence) {
+        this.httpSequence = httpSequence;
     }
+
 
     public boolean enable() {
         //final ApplicationInstance instance = instanceRepository.findByGuid(guid, ApplicationInstance.class);
-        if (instance.isEnabled()) {
-            LOGGER.debug("<{}> Instance[guid={}] already enabled, ignore it", username(), instance.getGuid());
+        // 判断是否正在运行
+        if (httpSequence.getEnabled() ==1) {
+            LOGGER.debug("<{}> Instance[guid={}] already enabled, ignore it", username(), httpSequence.getgId());
             return false;
         }
 
-        final boolean addSuccessful = startupMonitoringJob(instance);
+        final boolean addSuccessful = startupMonitoringJob(httpSequence);
         if (!addSuccessful) {
-            LOGGER.debug("<{}> NOTE: Add MonitoringJob[jobName={}] failed", username(), instance.getJobName());
+            LOGGER.debug("<{}> NOTE: Add MonitoringJob[jobName={}] failed", username(), httpSequence.getJobName());
             return false;
         }
 
         //update
-        instance.setEnabled(true);
-        httpRequestService.updateEnabled(instance);
-        LOGGER.debug("<{}> Update ApplicationInstance[guid={}] enabled=true,jobName={}", username(), instance.getGuid(), instance.getJobName());
+//        httpSequence.setEnabled(1);
+//        httpRequestService.updateEnabled(instance);
+//        LOGGER.debug("<{}> Update ApplicationInstance[guid={}] enabled=true,jobName={}", username(), instance.getGuid(), instance.getJobName());
 
         return true;
     }
 
-    private boolean startupMonitoringJob(HttpSequence instance) {
-        final String jobName = getAndSetJobName(instance);
+    private boolean startupMonitoringJob(HttpSequence httpSequence) {
+        final String jobName = getAndSetJobName(httpSequence);
 
         DynamicJob job = new DynamicJob(jobName)
-                .cronExpression(instance.getFrequency().getCronExpression())
+                // 监控频率表达式，先写死
+                .cronExpression("0/10 * * * * ?")
                 .target(HttpMonitoringJob.class)
-                .addJobData(HttpMonitoringJob.APPLICATION_INSTANCE_GUID, instance.getGuid());
+                .addJobData(HttpMonitoringJob.APPLICATION_INSTANCE_GUID, httpSequence.getgId());
 
-        return executeStartup(instance, job);
+        return executeStartup(httpSequence, job);
     }
 
-    private boolean executeStartup(HttpSequence instance, DynamicJob job) {
+
+
+    private boolean executeStartup(HttpSequence httpSequence, DynamicJob job) {
         boolean result = false;
         try {
             if (DynamicSchedulerFactory.existJob(job)) {
                 result = DynamicSchedulerFactory.resumeJob(job);
-                LOGGER.debug("<{}> Resume  [{}] by ApplicationInstance[guid={},instanceName={}] result: {}", username(), job, instance.getGuid(), instance.getName(), result);
+                LOGGER.debug("<{}> Resume  [{}] by ApplicationInstance[guid={},instanceName={}] result: {}", username(), job, httpSequence.getgId(), httpSequence.getJobName(), result);
             } else {
                 result = DynamicSchedulerFactory.registerJob(job);
-                LOGGER.debug("<{}> Register  [{}] by ApplicationInstance[guid={},instanceName={}] result: {}", username(), job, instance.getGuid(), instance.getName(), result);
+                LOGGER.debug("<{}> Register  [{}] by ApplicationInstance[guid={},instanceName={}] result: {}", username(), job, httpSequence.getgId(), httpSequence.getJobName(), result);
             }
         } catch (SchedulerException e) {
             LOGGER.error("<{}> Register [" + job + "] failed", username(), e);
@@ -84,81 +86,17 @@ public class DynamicJobManager {
         return result;
     }
 
-    private String getAndSetJobName(HttpSequence instance) {
-        String jobName = instance.getJobName();
+    private String getAndSetJobName(HttpSequence httpSequence) {
+        String jobName = httpSequence.getJobName();
         if (StringUtils.isEmpty(jobName)) {
-            jobName = generateMonitoringInstanceJobName(instance.getGuid());
-            instance.setJobName(jobName);
+            jobName = generateMonitoringInstanceJobName(httpSequence.getgId().toString());
+            httpSequence.setJobName(jobName);
         }
         return jobName;
     }
 
     private String username() {
     	return null;
-        //return SecurityUtils.currentUsername();
-    }
-    
-
-    public boolean delete() {
-        if (instance.isEnabled()) {
-            LOGGER.debug("<{}> Forbid delete enabled ApplicationInstance[guid={}]", username(), instance.getGuid());
-            return false;
-        }
-
-        httpRequestService.deleteHttpLog(instance.getGuid());
-
-        checkAndRemoveJob(instance);
-
-        //logic delete
-        instance.setArchived(true);
-        httpRequestService.archivedHttpData(instance.getGuid());
-        LOGGER.debug("<{}> Archive ApplicationInstance[guid={}] and FrequencyMonitorLogs,MonitoringReminderLogs", username(), instance.getGuid());
-        return true;
     }
 
-    private void checkAndRemoveJob(HttpSequence instance) {
-        DynamicJob job = new DynamicJob(getAndSetJobName(instance));
-        try {
-            if (DynamicSchedulerFactory.existJob(job)) {
-                final boolean result = DynamicSchedulerFactory.removeJob(job);
-                LOGGER.debug("<{}> Remove DynamicJob[{}] result [{}]", username(), job, result);
-            }
-        } catch (SchedulerException e) {
-            LOGGER.error("<{}> Remove [" + job + "] failed", username(), e);
-        }
-    }
-
-    
-    /* * 1. Remove the job
-     * 2. update instance to enabled=false
-     **/
-     
-    public boolean kill() {
-        if (!instance.isEnabled()) {
-            LOGGER.debug("<{}> Expect ApplicationInstance[guid={}] enabled=true,but it is false, illegal status",
-            		username(), instance.getGuid());
-            return false;
-        }
-
-        if (!pauseJob(instance)) {
-            LOGGER.debug("<{}> Pause Job[name={}] failed", username(), instance.getJobName());
-            return false;
-        }
-
-        //update
-        instance.setEnabled(false);
-        httpRequestService.updateEnabled(instance);
-        LOGGER.debug("<{}> Update ApplicationInstance[guid={}] enabled=false", username(), instance.getGuid());
-        return true;
-    }
-
-    private boolean pauseJob(HttpSequence instance) {
-        DynamicJob job = new DynamicJob(getAndSetJobName(instance));
-        try {
-            return DynamicSchedulerFactory.pauseJob(job);
-        } catch (SchedulerException e) {
-            LOGGER.error("<{}> Pause [" + job + "] failed", username(), e);
-            return false;
-        }
-    }
 }

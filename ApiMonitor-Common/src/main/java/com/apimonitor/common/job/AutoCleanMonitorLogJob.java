@@ -1,6 +1,5 @@
 package com.apimonitor.common.job;
 
-
 import com.apimonitor.common.service.HttpRequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+
+/**
+ *
+ */
 @Component
 public class AutoCleanMonitorLogJob implements InitializingBean {
 
@@ -29,7 +32,7 @@ public class AutoCleanMonitorLogJob implements InitializingBean {
     public void execute() {
         LOG.debug("*****  Start execute Job [{}]", getClass());
 
-        logService.cleanMonitorLogs(day);
+//        logService.cleanMonitorLogs(day);
 
         LOG.debug("&&&&&  End execute Job [{}]", getClass());
     }

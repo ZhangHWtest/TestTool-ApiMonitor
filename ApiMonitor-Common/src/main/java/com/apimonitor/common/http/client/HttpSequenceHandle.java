@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class HttpSequenceHandle {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(HttpClientHandler.class);
@@ -34,18 +35,18 @@ public class HttpSequenceHandle {
 	//cookie保存
 	CookieStore cookieStore=new BasicCookieStore();
 	
-	public void execute(){
-		 List<HttpRequest> requests = httpSequence.getHttpRequest();
-		 for(HttpRequest request : requests){
-			 HttpClientHandler handle = new HttpClientHandler(request,this);
-			 HttpRequestLog requestLog = handle.execute();
-			 requestLog.setPguid(request.getGuid());
-			 requestLog.setPpguid(httpSequence.getGuid());
-			 httpRequestLogList.add(requestLog);
-		 }
-		 handleLog();
-		 
-	}
+//	public void execute(){
+//		 List<HttpRequest> requests = httpSequence.getHttpRequest();
+//		 for(HttpRequest request : requests){
+//			 HttpClientHandler handle = new HttpClientHandler(request,this);
+//			 HttpRequestLog requestLog = handle.execute();
+//			 requestLog.setPguid(request.getgId().toString());
+//			 requestLog.setPpguid(httpSequence.getgId().toString());
+//			 httpRequestLogList.add(requestLog);
+//		 }
+//		 handleLog();
+//
+//	}
 	
 	private void handleLog(){
 		httpSequenceLog = new HttpSequenceLog();
@@ -60,7 +61,7 @@ public class HttpSequenceHandle {
 				tempLog.append(log.getLog());
 			}
 		}
-		httpSequenceLog.setPguid(httpSequence.getGuid());
+		httpSequenceLog.setPguid(httpSequence.getgId().toString());
 		httpSequenceLog.setCostTime(costTime);
 		httpSequenceLog.setLog(tempLog.toString());
 		httpSequenceLog.setStatus(StringUtil.isEmpty(tempLog.toString()));

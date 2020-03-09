@@ -1,8 +1,6 @@
 package com.apimonitor.common.config;
 
 
-import com.apimonitor.common.quartz.DynamicSchedulerFactory;
-import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,16 +28,6 @@ public class ScheduleFactoryConfig {
     }
 
 
-    /**
-     * dynamic scheduler factory
-     * 动态 定时任务 配置
-     */
-    @Bean
-    public DynamicSchedulerFactory dynamicSchedulerFactory(Scheduler scheduler) {
-        DynamicSchedulerFactory schedulerFactory = new DynamicSchedulerFactory();
-        schedulerFactory.setScheduler(scheduler);
-        return schedulerFactory;
-    }
 
 
 }

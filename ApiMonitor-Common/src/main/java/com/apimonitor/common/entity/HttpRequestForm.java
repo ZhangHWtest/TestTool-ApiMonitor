@@ -1,192 +1,235 @@
 package com.apimonitor.common.entity;
 
-import java.util.Date;
-import java.util.HashMap;
 
+import java.time.LocalDateTime;
 
 public class HttpRequestForm {
-	
-	public static HttpRequestForm getHttpRequestForm(HttpSequence s, HttpRequest r){
-		HttpRequestForm form = new HttpRequestForm();
-		form.setGuid(r.getGuid());
-		form.setPguid(s.getGuid());
-		
-		form.setGroup(s.getGroup());
-		form.setType(s.getType());
-		form.setName(s.getName());
-		form.setFrequency(s.getFrequency());
-		form.setRemark(s.getRemark());
-		
-		form.setHttpMethod(r.getHttpMethod());
-		form.setUrl(r.getUrl());
-		form.setHeaders(r.getHeaders());
-		form.setParameters(r.getParameters());
-		form.setConditionType(r.getConditionType());
-		form.setCondition(r.getCondition());
-		form.setResultType(r.getResultType());
-		form.setVariables(r.getVariables());
-		form.setMaxConnectionSeconds(r.getMaxConnectionSeconds());
-		return form;
+
+	public HttpSequence getHttpSequence(HttpRequestForm from) {
+		HttpSequence httpSequence =new HttpSequence();
+		httpSequence.setgId(from.getgId());
+		httpSequence.setgName(from.getgName());
+		httpSequence.setsName(from.getsName());
+		httpSequence.setJobName(from.getJobName());
+		httpSequence.setType(from.getType());
+		httpSequence.setEnabled(from.getEnabled());
+		httpSequence.setFrequency(from.getFrequency());
+		httpSequence.setRemark(from.getRemark());
+		httpSequence.setCreateTime(from.getCreateTime());
+		httpSequence.setArchived(from.getArchived());
+		return httpSequence;
 	}
-	
-	private int id;
-	
-	private String guid;
 
-	private String pguid;
-	
-	private String group;//所属组
-	
-	private HttpSequence.MonitorType type;//类型：SINGLE-单个接口；SEQUENCE-多个接口
-	
-	private String name;
+	public HttpRequest getHttpRequest(HttpRequestForm from) {
+		HttpRequest httpRequest =new HttpRequest();
+		httpRequest.setSepId(from.getSepId());
+		httpRequest.setgId(from.getgId());
+		httpRequest.setSort(from.getSort());
+		httpRequest.setHttpUrl(from.httpUrl);
+		httpRequest.setHttpMethod(from.getHttpMethod());
+		httpRequest.setHttpHeaders(from.getHttpHeaders());
+		httpRequest.setHttpParameters(from.getHttpParameters());
+		httpRequest.setMaxConnectionSeconds(from.getMaxConnectionSeconds());
+		httpRequest.setConditionType(from.getConditionType());
+		httpRequest.setConditionBody(from.getConditionBody());
+		httpRequest.setResultType(from.getResultType());
+		httpRequest.setVariables(from.getVariables());
+		httpRequest.setRemark(from.getRemark());
+		httpRequest.setArchived(from.getArchived());
+		httpRequest.setCreateTime(from.getCreateTime());
+		return httpRequest;
+	}
 
-    private MonitorFrequency frequency = MonitorFrequency.THIRTY;//监控频率
-    
-	private int sort = 1;//序号
+	public HttpSystem getHttpSystem(HttpRequestForm from) {
+		HttpSystem httpSystem =new HttpSystem();
+		httpSystem.setName(from.getgName());
+		return httpSystem;
+	}
 
-    private String url;//地址
 
-    private String remark;//备注
+	/**
+	 * 父主键（即http_sequence表的guid）
+	 */
+	private Integer sepId;
+	/**
+	 * 序号
+	 */
+	private Integer sort;
 
-	private HttpRequest.CheckCondition conditionType = HttpRequest.CheckCondition.DEFAULT;//结果校验类型（包含，不包含，状态码，默认200）
+	/**
+	 * 地址
+	 */
+	private String httpUrl;
 
-	private String condition;//结果校验内容
-	
-	private HttpRequest.ResultType resultType;//返回结果类型（xml，json）
-	
-	private HttpRequest.HttpMethod httpMethod;//http方法（get,head,post,put,delete）
+	/**
+	 * HTTP类型（GET, HEAD, POST, PUT, DELETE）
+	 */
+	private String httpMethod;
 
-	private String headers;
+	/**
+	 * 请求头部，格式（key::value\nkey::value）
+	 */
+	private String httpHeaders;
 
-	private String parameters;
+	/**
+	 * 请求参数，格式（key::value\nkey::value）
+	 */
+	private String httpParameters;
 
+	/**
+	 * 最大连接时间
+	 */
+	private Integer maxConnectionSeconds;
+
+	/**
+	 * 结果校验类型（CONTAINS, DOESNT_CONTAIN, STATUSCODE, DEFAULT）
+	 */
+	private String conditionType;
+
+	/**
+	 * 结果校验内容
+	 */
+	private String conditionBody;
+
+	/**
+	 * 返回结果的格式（XML, JSON）
+	 */
+	private String resultType;
+
+	/**
+	 * 变量定义，格式（key::value\nkey::value）
+	 */
 	private String variables;
-	
-	private HashMap<String,String> headersMap = new HashMap<String,String>();//请求头部
 
-	private HashMap<String,String> parametersMap = new HashMap<String,String>();//请求参数
-	
-	private HashMap<String,String> variablesMap = new HashMap<String,String>();//变量
-	
-    private int maxConnectionSeconds;//最大超时时间
+	/**
+	 * 系统ID
+	 */
+	private Integer gId;
 
-    private Date createTime;
+	/**
+	 * 所属系统
+	 */
+	private String gName;
 
-    private boolean archived;//是否删除（0-有效，1-删除）
-    
-	public int getId() {
-		return id;
+	/**
+	 * 名称
+	 */
+	private String sName;
+
+	/**
+	 * job名称
+	 */
+	private String jobName;
+
+	/**
+	 * 类型（1:单个SINGLE,2:群组 SEQUENCE）
+	 */
+	private Integer type;
+
+	/**
+	 * 是否启动监控（0-不启动，1-启动）
+	 */
+	private Integer enabled;
+
+	/**
+	 * 监控频率,默认30
+	 */
+	private Integer frequency;
+
+	/**
+	 * 备注
+	 */
+	private String remark;
+
+	/**
+	 * 创建时间
+	 */
+	private LocalDateTime createTime;
+
+	/**
+	 * 存档（0-有效，1-删除）
+	 */
+	private Boolean archived;
+
+
+	public Integer getSepId() {
+		return sepId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setSepId(Integer sepId) {
+		this.sepId = sepId;
 	}
 
-	public String getGuid() {
-		return guid;
-	}
-
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
-
-	public String getPguid() {
-		return pguid;
-	}
-
-	public void setPguid(String pguid) {
-		this.pguid = pguid;
-	}
-	
-
-	public String getGroup() {
-		return group;
-	}
-
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	public HttpSequence.MonitorType getType() {
-		return type;
-	}
-
-	public void setType(HttpSequence.MonitorType type) {
-		this.type = type;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getSort() {
+	public Integer getSort() {
 		return sort;
 	}
 
-	public void setSort(int sort) {
+	public void setSort(Integer sort) {
 		this.sort = sort;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getHttpUrl() {
+		return httpUrl;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setHttpUrl(String httpUrl) {
+		this.httpUrl = httpUrl;
 	}
 
-	public String getRemark() {
-		return remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
-	public HttpRequest.CheckCondition getConditionType() {
-		return conditionType;
-	}
-
-	public void setConditionType(HttpRequest.CheckCondition conditionType) {
-		this.conditionType = conditionType;
-	}
-
-	
-	public HttpRequest.ResultType getResultType() {
-		return resultType;
-	}
-
-	public void setResultType(HttpRequest.ResultType resultType) {
-		this.resultType = resultType;
-	}
-
-	public HttpRequest.HttpMethod getHttpMethod() {
+	public String getHttpMethod() {
 		return httpMethod;
 	}
 
-	public void setHttpMethod(HttpRequest.HttpMethod httpMethod) {
+	public void setHttpMethod(String httpMethod) {
 		this.httpMethod = httpMethod;
 	}
 
-	public String getHeaders() {
-		return headers;
+	public String getHttpHeaders() {
+		return httpHeaders;
 	}
 
-	public void setHeaders(String headers) {
-		this.headers = headers;
+	public void setHttpHeaders(String httpHeaders) {
+		this.httpHeaders = httpHeaders;
 	}
 
-	public String getParameters() {
-		return parameters;
+	public String getHttpParameters() {
+		return httpParameters;
 	}
 
-	public void setParameters(String parameters) {
-		this.parameters = parameters;
+	public void setHttpParameters(String httpParameters) {
+		this.httpParameters = httpParameters;
+	}
+
+	public Integer getMaxConnectionSeconds() {
+		return maxConnectionSeconds;
+	}
+
+	public void setMaxConnectionSeconds(Integer maxConnectionSeconds) {
+		this.maxConnectionSeconds = maxConnectionSeconds;
+	}
+
+	public String getConditionType() {
+		return conditionType;
+	}
+
+	public void setConditionType(String conditionType) {
+		this.conditionType = conditionType;
+	}
+
+	public String getConditionBody() {
+		return conditionBody;
+	}
+
+	public void setConditionBody(String conditionBody) {
+		this.conditionBody = conditionBody;
+	}
+
+	public String getResultType() {
+		return resultType;
+	}
+
+	public void setResultType(String resultType) {
+		this.resultType = resultType;
 	}
 
 	public String getVariables() {
@@ -197,68 +240,83 @@ public class HttpRequestForm {
 		this.variables = variables;
 	}
 
-	public HashMap<String, String> getHeadersMap() {
-		return headersMap;
+	public Integer getgId() {
+		return gId;
 	}
 
-	public void setHeadersMap(HashMap<String, String> headers) {
-		this.headersMap = headers;
+	public void setgId(Integer gId) {
+		this.gId = gId;
 	}
 
-	public HashMap<String, String> getParametersMap() {
-		return parametersMap;
+	public String getgName() {
+		return gName;
 	}
 
-	public void setParametersMap(HashMap<String, String> parameters) {
-		this.parametersMap = parameters;
+	public void setgName(String gName) {
+		this.gName = gName;
 	}
 
-	
-	public HashMap<String, String> getVariablesMap() {
-		return variablesMap;
+	public String getsName() {
+		return sName;
 	}
 
-	public void setVariablesMap(HashMap<String, String> variables) {
-		this.variablesMap = variables;
+	public void setsName(String sName) {
+		this.sName = sName;
 	}
 
-	public int getMaxConnectionSeconds() {
-		return maxConnectionSeconds;
+	public String getJobName() {
+		return jobName;
 	}
 
-	public void setMaxConnectionSeconds(int maxConnectionSeconds) {
-		this.maxConnectionSeconds = maxConnectionSeconds;
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
 	}
 
-	public String getCondition() {
-		return condition;
+	public Integer getType() {
+		return type;
 	}
 
-	public void setCondition(String condition) {
-		this.condition = condition;
+	public void setType(Integer type) {
+		this.type = type;
 	}
 
-    public Date getCreateTime() {
-		return createTime;
+	public Integer getEnabled() {
+		return enabled;
 	}
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
+	public void setEnabled(Integer enabled) {
+		this.enabled = enabled;
 	}
 
-	public boolean isArchived() {
-		return archived;
-	}
-
-	public void setArchived(boolean archived) {
-		this.archived = archived;
-	}
-	public MonitorFrequency getFrequency() {
+	public Integer getFrequency() {
 		return frequency;
 	}
 
-	public void setFrequency(MonitorFrequency frequency) {
+	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
 
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public LocalDateTime getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(LocalDateTime createTime) {
+		this.createTime = createTime;
+	}
+
+	public Boolean getArchived() {
+		return archived;
+	}
+
+	public void setArchived(Boolean archived) {
+		this.archived = archived;
+	}
 }

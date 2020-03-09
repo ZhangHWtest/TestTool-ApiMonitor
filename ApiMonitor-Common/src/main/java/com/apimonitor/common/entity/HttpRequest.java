@@ -1,274 +1,241 @@
 package com.apimonitor.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.github.pagehelper.StringUtil;
+import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField;
+import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-
+/**
+ * <p>
+ * http请求表
+ * </p>
+ *
+ * @author zhwtest
+ * @since 2020-03-09
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("http_request")
 public class HttpRequest implements Serializable {
 
-    private static final long serialVersionUID = 1826152029135090793L;
 
-	public static HttpRequest getHttpRequest(HttpRequestForm httpRequestForm){
-		HttpRequest httpRequest = new HttpRequest();
-		httpRequest.setGuid(httpRequestForm.getGuid());
-		httpRequest.setPguid(httpRequestForm.getPguid());
-		httpRequest.setHttpMethod(httpRequestForm.getHttpMethod());
-		httpRequest.setUrl(httpRequestForm.getUrl());
-		httpRequest.setHeaders(httpRequestForm.getHeaders());
-		httpRequest.setParameters(httpRequestForm.getParameters());
-		httpRequest.setConditionType(httpRequestForm.getConditionType());
-		httpRequest.setCondition(httpRequestForm.getCondition());
-		httpRequest.setResultType(httpRequestForm.getResultType());
-		httpRequest.setVariables(httpRequestForm.getVariables());
-		httpRequest.setMaxConnectionSeconds(httpRequestForm.getMaxConnectionSeconds());
-		return httpRequest;
-	}
+    private static final long serialVersionUID=1L;
 
-	public enum CheckCondition {
-		CONTAINS, DOESNT_CONTAIN, STATUSCODE, DEFAULT
-	}
-	public enum HttpMethod {
-		GET, HEAD, POST, PUT, DELETE
-	}
-	
-	public enum ResultType {
-		XML, JSON
-	}
-	@TableId(value = "id", type = IdType.AUTO)
-	private int id;
-	
-	private String guid;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-	private String pguid;
-	
-	private int sort = 1;//序号
+    /**
+     * 父主键（即http_sequence表的guid）
+     */
+    private Integer sepId;
 
-    private String url;//地址
+    /**
+     * 主键
+     */
+    private Integer gId;
 
-    private String remark;//备注
+    /**
+     * 序号
+     */
+    private Integer sort;
 
-	private CheckCondition conditionType = CheckCondition.DEFAULT;//结果校验类型（包含，不包含，状态码，默认200）
+    /**
+     * 地址
+     */
+    private String httpUrl;
 
-	private String condition;//结果校验内容
-	
-	private ResultType resultType;//返回结果类型（xml，json）
-	
-	private HttpMethod httpMethod;//http方法（get,head,post,put,delete）
+    /**
+     * HTTP类型（GET, HEAD, POST, PUT, DELETE）
+     */
+    private String httpMethod;
 
-	private String headers;
+    /**
+     * 请求头部，格式（key::value\nkey::value）
+     */
+    private String httpHeaders;
 
-	private String parameters;
+    /**
+     * 请求参数，格式（key::value\nkey::value）
+     */
+    private String httpParameters;
 
-	private String variables;
-	
-	private HashMap<String,String> headersMap = new HashMap<String,String>();//请求头部
+    /**
+     * 最大连接时间
+     */
+    private Integer maxConnectionSeconds;
 
-	private HashMap<String,String> parametersMap = new HashMap<String,String>();//请求参数
-	
-	private HashMap<String,String> variablesMap = new HashMap<String,String>();//变量
-	
-    private int maxConnectionSeconds = 30;//最大超时时间
+    /**
+     * 结果校验类型（CONTAINS, DOESNT_CONTAIN, STATUSCODE, DEFAULT）
+     */
+    private String conditionType;
 
-    private Date createTime;
+    /**
+     * 结果校验内容
+     */
+    private String conditionBody;
 
-    private boolean archived;//是否删除（0-有效，1-删除）
-    
-	public int getId() {
-		return id;
-	}
+    /**
+     * 返回结果的格式（XML, JSON）
+     */
+    private String resultType;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    /**
+     * 变量定义，格式（key::value\nkey::value）
+     */
+    private String variables;
 
-	public String getGuid() {
-		return guid;
-	}
+    /**
+     * 备注
+     */
+    private String remark;
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+    /**
+     * 存档（0-有效，1-删除）
+     */
+    private Boolean archived;
 
-	public String getPguid() {
-		return pguid;
-	}
+    /**
+     * 创建时间
+     */
+    @TableField("createTime")
+    private LocalDateTime createTime;
 
-	public void setPguid(String pguid) {
-		this.pguid = pguid;
-	}
 
-	public int getSort() {
-		return sort;
-	}
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-	public void setSort(int sort) {
-		this.sort = sort;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public Integer getSepId() {
+        return sepId;
+    }
 
-	public String getRemark() {
-		return remark;
-	}
+    public void setSepId(Integer sepId) {
+        this.sepId = sepId;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public Integer getgId() {
+        return gId;
+    }
 
-	public CheckCondition getConditionType() {
-		return conditionType;
-	}
+    public void setgId(Integer gId) {
+        this.gId = gId;
+    }
 
-	public void setConditionType(CheckCondition conditionType) {
-		this.conditionType = conditionType;
-	}
+    public Integer getSort() {
+        return sort;
+    }
 
-	
-	public ResultType getResultType() {
-		return resultType;
-	}
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 
-	public void setResultType(ResultType resultType) {
-		this.resultType = resultType;
-	}
+    public String getHttpUrl() {
+        return httpUrl;
+    }
 
-	public HttpMethod getHttpMethod() {
-		return httpMethod;
-	}
+    public void setHttpUrl(String httpUrl) {
+        this.httpUrl = httpUrl;
+    }
 
-	public void setHttpMethod(HttpMethod httpMethod) {
-		this.httpMethod = httpMethod;
-	}
+    public String getHttpMethod() {
+        return httpMethod;
+    }
 
-	public String getHeaders() {
-		return headers;
-	}
+    public void setHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+    }
 
-	public void setHeaders(String headers) {
-		this.headers = headers;
-		this.headersMap = this.stringToMap(headers);
-	}
+    public String getHttpHeaders() {
+        return httpHeaders;
+    }
 
-	public String getParameters() {
-		return parameters;
-	}
+    public void setHttpHeaders(String httpHeaders) {
+        this.httpHeaders = httpHeaders;
+    }
 
-	public void setParameters(String parameters) {
-		this.parameters = parameters;
-		this.parametersMap = this.stringToMap(parameters);
-	}
+    public String getHttpParameters() {
+        return httpParameters;
+    }
 
-	public String getVariables() {
-		return variables;
-	}
+    public void setHttpParameters(String httpParameters) {
+        this.httpParameters = httpParameters;
+    }
 
-	public void setVariables(String variables) {
-		this.variables = variables;
-		this.variablesMap = this.stringToMap(variables);
-	}
+    public Integer getMaxConnectionSeconds() {
+        return maxConnectionSeconds;
+    }
 
-	public HashMap<String, String> getHeadersMap() {
-		return headersMap;
-	}
+    public void setMaxConnectionSeconds(Integer maxConnectionSeconds) {
+        this.maxConnectionSeconds = maxConnectionSeconds;
+    }
 
-	public void setHeadersMap(HashMap<String, String> headers) {
-		this.headersMap = headers;
-		this.headers = this.mapToString(headersMap);
-	}
+    public String getConditionType() {
+        return conditionType;
+    }
 
-	public HashMap<String, String> getParametersMap() {
-		return parametersMap;
-	}
+    public void setConditionType(String conditionType) {
+        this.conditionType = conditionType;
+    }
 
-	public void setParametersMap(HashMap<String, String> parameters) {
-		this.parametersMap = parameters;
-		this.parameters = this.mapToString(parametersMap);
-	}
+    public String getConditionBody() {
+        return conditionBody;
+    }
 
-	
-	public HashMap<String, String> getVariablesMap() {
-		return variablesMap;
-	}
+    public void setConditionBody(String conditionBody) {
+        this.conditionBody = conditionBody;
+    }
 
-	public void setVariablesMap(HashMap<String, String> variables) {
-		this.variablesMap = variables;
-		this.variables = this.mapToString(variablesMap);
-	}
+    public String getResultType() {
+        return resultType;
+    }
 
-	public int getMaxConnectionSeconds() {
-		return maxConnectionSeconds;
-	}
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
+    }
 
-	public void setMaxConnectionSeconds(int maxConnectionSeconds) {
-		this.maxConnectionSeconds = maxConnectionSeconds;
-	}
+    public String getVariables() {
+        return variables;
+    }
 
-	public String getCondition() {
-		return condition;
-	}
+    public void setVariables(String variables) {
+        this.variables = variables;
+    }
 
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
+    public String getRemark() {
+        return remark;
+    }
 
-    public Date getCreateTime() {
-		return createTime;
-	}
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
+    public Boolean getArchived() {
+        return archived;
+    }
 
-	public boolean isArchived() {
-		return archived;
-	}
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
+    }
 
-	public void setArchived(boolean archived) {
-		this.archived = archived;
-	}
-	
-	public String mapToString(HashMap<String, String> map){
-		if(map == null || map.size() == 0)return null;
-		StringBuffer sb = new StringBuffer();
-		for (String key : map.keySet()) {
-			if(sb.length()!=0)sb.append("\r\n");
-			sb.append(key).append("::").append(map.get(key));
-		}
-		return sb.toString();
-	}
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
 
-	public HashMap<String, String> stringToMap(String text){
-		if(StringUtil.isEmpty(text))return null;
-		HashMap<String, String> map = new HashMap<String, String>();
-		String[] strArray = text.split("\r\n");
-		for(String str : strArray){
-			String[] header = str.split("::");
-			map.put(header[0], header[1]);
-		}
-		return map;
-	}
-	
-	
-	
-	
-	
-   
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
 }
