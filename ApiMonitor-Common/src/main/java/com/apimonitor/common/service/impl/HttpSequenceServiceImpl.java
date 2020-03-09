@@ -1,38 +1,147 @@
 package com.apimonitor.common.service.impl;
 
-import com.apimonitor.common.entity.HttpSequence;
-import com.apimonitor.common.entity.HttpSequenceLog;
-import com.apimonitor.common.mapper.HttpSequenceLogMapper;
-import com.apimonitor.common.mapper.HttpSequenceMapper;
+
+import com.apimonitor.common.dao.HttpSequenceLogMapper;
+import com.apimonitor.common.dao.HttpSequenceMapper;
+import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.model.HttpSequenceLog;
+import com.apimonitor.common.model.HttpSystem;
+import com.apimonitor.common.model.MonitorFrequency;
 import com.apimonitor.common.service.HttpSequenceService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.apimonitor.common.util.GuidGenerator;
+import com.apimonitor.common.util.MathUtil;
+import com.github.pagehelper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * <p>
- * http序列表 服务实现类
- * </p>
- *
- * @author zhwtest
- * @since 2020-03-09
- */
+import java.util.List;
+import java.util.Map;
+
 @Service
-public class HttpSequenceServiceImpl extends ServiceImpl<HttpSequenceMapper, HttpSequence> implements HttpSequenceService {
+public class HttpSequenceServiceImpl implements HttpSequenceService {
 
-    @Autowired
-    private HttpSequenceMapper httpSequenceMapper;
-    @Autowired
-    private HttpSequenceLogMapper httpSequenceLogMapper;
+	@Autowired
+	private HttpSequenceMapper httpSequenceMapper;
+	@Autowired
+	private HttpSequenceLogMapper httpSequenceLogMapper;
+	
+	@Override
+	public HttpSequence getByGuid(String guid){
+		return httpSequenceMapper.getByGuid(guid);
+	}
+	
+	@Override
+	public void archived(String guid){
+		httpSequenceMapper.archived(guid);
+	}
+	
+	@Override
+	public void updateEnabled(HttpSequence httpSequence){
+		httpSequenceMapper.updateEnabled(httpSequence);
+	}
+	
+	@Override
+	public void insert(HttpSequence httpSequence){
+		if(StringUtil.isEmpty(httpSequence.getGuid())){
+			httpSequence.setGuid(GuidGenerator.generate());
+		}
+		httpSequenceMapper.insert(httpSequence);
+	}
+	@Override
+	public void update(HttpSequence httpSequence){
+		httpSequenceMapper.update(httpSequence);
+	}
+	
+	@Override
+	public List<Map<String, Object>> getMonitorList(){
+		List<Map<String, Object>> list = httpSequenceMapper.selectMonitorList();
+		for(Map<String,Object> item : list){
+			item.put("frequency", MonitorFrequency.valueOf(item.get("frequency").toString()).getLabel());
+			item.put("type", HttpSequence.getMonitorTypeName(String.valueOf(item.get("type"))));
+			String guid = String.valueOf(item.get("guid"));
+			//启动监控
+			if((boolean)item.get("enabled")){
+				//平均响应时间
+				Object avgCostTime = httpSequenceLogMapper.selectAvgCostTimeByPguid(guid);
+				item.put("avgCostTime", avgCostTime);
+				//最近一次请求状态
+				Object recentStatus = httpSequenceLogMapper.selectRecentStatusByPguid(guid);
+				if(recentStatus == null){
+					item.put("status", "未监控");
+					item.put("textColor", "text-muted");
+				}else{
+					item.put("status", (boolean)recentStatus == true ? "正常" : "故障");
+					item.put("textColor", (boolean)recentStatus == true ? "text-green" : "text-red");
+				}
+				//可用率
+				List<Map<String, Object>> usabilityList = httpSequenceLogMapper.selectUsabilityByPguid(guid);
+				long count = 0;
+				long uCount = 0;
+				for(Map<String,Object> u : usabilityList){
+					count += (long)u.get("count");
+					if((boolean)u.get("status")){
+						uCount+=(long)u.get("count");
+					}
+				}
+				item.put("usability", MathUtil.percent(uCount, count));
+				
+			}else{
+				//未启动
+				item.put("status", "未监控");
+				item.put("textColor", "text-muted");
+				item.put("usability", "0%");
+				item.put("avgCostTime", "0");
+			}
+		}
+		return list;
+	}
+	
+	@Override
+	public List<Map<String, Object>> getLogByGuid(String guid){
+		
+		List<Map<String, Object>> list = httpSequenceLogMapper.selectLogByPguid(guid);
 
-    @Override
-    public HttpSequence getByGuid(String gId){
-        return httpSequenceMapper.getByGuid(gId);
-    }
+		for(Map<String,Object> item : list){
+			
+		}
+		return list;
+		
+	}
 
-    @Override
-    public void insertLog(HttpSequenceLog httpSequenceLog){
-        httpSequenceLogMapper.insert(httpSequenceLog);
-    }
 
+
+	@Override
+	public boolean addHttpSystem(String group){
+		HttpSystem httpSystem = new HttpSystem();
+		httpSystem.setName(group);
+		try{
+			httpSequenceMapper.insertSystem(httpSystem);
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+		
+	}
+
+	@Override
+	public List<HttpSystem> getAllSystem(){
+		return httpSequenceMapper.selectAllSystem();
+		
+	}
+	
+	@Override
+	public void insertLog(HttpSequenceLog httpSequenceLog){
+		httpSequenceLogMapper.insert(httpSequenceLog);
+	}
+	
+	@Override
+	public void deleteLog(String pguid){
+		httpSequenceLogMapper.delete(pguid);
+	}
+
+	@Override
+	public void cleanLog(int day){
+		httpSequenceLogMapper.cleanLogByDay(day);
+		
+	}
 }

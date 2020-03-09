@@ -1,22 +1,10 @@
-package com.apimonitor.common.entity;
+package com.apimonitor.common.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
 import java.util.Date;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
-@TableName("http_request_log")
-public class HttpRequestLog implements Serializable {
+public class HttpRequestLog {
+	
 
-	@TableId(value = "id", type = IdType.AUTO)
 	private int id;
 	
 	private int pid;

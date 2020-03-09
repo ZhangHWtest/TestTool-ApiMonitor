@@ -1,21 +1,40 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.common.entity.HttpRequest;
-import com.baomidou.mybatisplus.extension.service.IService;
+
+
+import com.apimonitor.common.model.HttpRequest;
+import com.apimonitor.common.model.HttpSequence;
 
 import java.util.List;
+import java.util.Map;
 
-/**
- * <p>
- * http请求表 服务类
- * </p>
- *
- * @author zhwtest
- * @since 2020-03-09
- */
-public interface HttpRequestService extends IService<HttpRequest> {
-    void executeRequest(String gId);
+public interface HttpRequestService {
 
-    List<HttpRequest> getHttpRequestListByPguid(String pguid);
+	boolean enableMonitor(String guid);
 
+    boolean deleteMonitor(String guid);
+    
+    boolean disableMonitor(String guid);
+    
+
+    void executeRequest(String guid);
+    
+    void archivedHttpData(String guid);
+    
+    void deleteHttpLog(String guid);
+    
+    public void cleanMonitorLogs(int day);
+    
+	public List<HttpRequest> getAllHttpRequest();
+	
+	public HttpRequest getHttpRequestByGuid(String guid);
+	
+	public List<HttpRequest> getHttpRequestListByPguid(String pguid);
+
+	public void insertHttpRequest(HttpRequest httpRequest);
+	public void updateHttpRequest(HttpRequest httpRequest);
+	public void updateEnabled(HttpSequence httpSequence);
+	
+
+	public List<Map<String, Object>> getHttpRequestLogByPid(String id);
 }

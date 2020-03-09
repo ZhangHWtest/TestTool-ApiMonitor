@@ -1,11 +1,20 @@
 package com.apimonitor.common.http.client;
 
-import com.alibaba.fastjson.JSONPath;
-import com.apimonitor.common.entity.Application;
-import com.apimonitor.common.entity.HttpRequest;
-import com.apimonitor.common.entity.HttpRequestLog;
-import com.github.pagehelper.StringUtil;
-import com.google.common.xml.XmlEscapers;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.HashMap;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.X509TrustManager;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
@@ -21,20 +30,18 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
 
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.HashMap;
+import com.alibaba.fastjson.JSONPath;
+import com.apimonitor.common.model.Application;
+import com.apimonitor.common.model.HttpRequest;
+import com.apimonitor.common.model.HttpRequest.HttpMethod;
+import com.apimonitor.common.model.HttpRequest.ResultType;
+import com.apimonitor.common.model.HttpRequestLog;
+import com.apimonitor.common.util.XmlUtil;
+import com.github.pagehelper.StringUtil;
+import com.google.common.xml.XmlEscapers;
+
+
 
 
 public class HttpClientHandler {
@@ -94,11 +101,11 @@ public class HttpClientHandler {
 			statusCode = String.valueOf(getStatusCode(response));
 			body = getResponseBody(response);
 			response.close();
-//			validResponse(body, statusCode);
-//			handleVariables(body);
+			validResponse(body, statusCode);
+			handleVariables(body);
 		}catch(Exception e){
 			appendMessage(e.toString());
-			LOGGER.error("Send request to url[" + httpRequest.getHttpUrl() + "] failed", e);
+			LOGGER.error("Send request to url[" + httpRequest.getUrl() + "] failed", e);
 		}
 
 		HttpRequestLog requestLog = new HttpRequestLog();
@@ -113,10 +120,10 @@ public class HttpClientHandler {
 
 	protected CloseableHttpResponse sendRequest() throws ClientProtocolException, IOException {
 		RequestBuilder builder = createRequestBuilder();
-//		addRequestParams(builder);
+		addRequestParams(builder);
 		setHttpEntity(builder);
-		HttpUriRequest request = builder.setUri(httpRequest.getHttpUrl()).build();
-//		setHeaders(request);
+		HttpUriRequest request = builder.setUri(httpRequest.getUrl()).build();
+		setHeaders(request);
 		CloseableHttpClient client = createHttpClient();
 		return client.execute(request);
 	}
@@ -133,66 +140,64 @@ public class HttpClientHandler {
 		int status = httpResponse.getStatusLine().getStatusCode();
 		return status;
 	}
+	
+	protected void validResponse(String body, String statusCode) throws Exception {
+		switch (httpRequest.getConditionType()) {
+		case CONTAINS:
+			if (StringUtil.isEmpty(body) || !body.contains(httpRequest.getCondition())) {
+				appendMessage(httpRequest.getUrl() + " doesn't contain "
+						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getCondition()));
+			}
+			break;
+		case DOESNT_CONTAIN:
+			if (StringUtil.isEmpty(body) || body.contains(httpRequest.getCondition())) {
+				appendMessage(httpRequest.getUrl() + " contains "
+						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getCondition()));
+			}
+			break;
+		case STATUSCODE:
+			if (!statusCode.equals(httpRequest.getCondition())) {
+				appendMessage("Invalid status: " + httpRequest.getUrl() + " required: " + httpRequest.getCondition() + ", received: " + statusCode);
+			}
+			break;
+		default:
+			if (!"200".equals(statusCode)) {
+				appendMessage("Invalid status: " + httpRequest.getUrl() + " required: " + 200 + ", received: " + statusCode);
+			}
+		break;
+		}
+		
+	}
 
+	protected void handleVariables(String body) throws Exception {
+		if(StringUtil.isEmpty(body))return;
+		HashMap<String, String> variables = httpRequest.getVariablesMap();
+		ResultType type = httpRequest.getResultType();
+		if(variables == null || type == null)return;
+		if(type.equals(ResultType.JSON)){
+			for (String variableName : variables.keySet()) {
+				String variablePath = variables.get(variableName);
+				Object variableValue = JSONPath.read(body, variablePath);
+				this.httpSequenceHandle.setVariables(variableName, variableValue.toString());
+			}
+			
+		}else if(type.equals(ResultType.XML)){
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			org.w3c.dom.Document doc = builder.parse(IOUtils.toInputStream(XmlUtil.replaceChar(body), "UTF-8"));
+			XPathFactory xPathfactory = XPathFactory.newInstance();
+			for (String variableName : variables.keySet()) {
+				String variablePath = variables.get(variableName);
 
-
-//	protected void validResponse(String body, String statusCode) throws Exception {
-//		switch (httpRequest.getConditionType()) {
-//		case CONTAINS:
-//			if (StringUtil.isEmpty(body) || !body.contains(httpRequest.getConditionBody())) {
-//				appendMessage(httpRequest.getHttpUrl() + " doesn't contain "
-//						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getConditionBody()));
-//			}
-//			break;
-//		case DOESNT_CONTAIN:
-//			if (StringUtil.isEmpty(body) || body.contains(httpRequest.getConditionBody())) {
-//				appendMessage(httpRequest.getHttpUrl() + " contains "
-//						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getConditionBody()));
-//			}
-//			break;
-//		case STATUSCODE:
-//			if (!statusCode.equals(httpRequest.getConditionBody())) {
-//				appendMessage("Invalid status: " + httpRequest.getHttpUrl() + " required: " + httpRequest.getConditionBody() + ", received: " + statusCode);
-//			}
-//			break;
-//		default:
-//			if (!"200".equals(statusCode)) {
-//				appendMessage("Invalid status: " + httpRequest.getHttpUrl() + " required: " + 200 + ", received: " + statusCode);
-//			}
-//		break;
-//		}
-//
-//	}
-
-//	protected void handleVariables(String body) throws Exception {
-//		if(StringUtil.isEmpty(body))return;
-//		HashMap<String, String> variables = httpRequest.getVariablesMap();
-//		ResultType type = httpRequest.getResultType();
-//		if(variables == null || type == null)return;
-//		if(type.equals(ResultType.JSON)){
-//			for (String variableName : variables.keySet()) {
-//				String variablePath = variables.get(variableName);
-//				Object variableValue = JSONPath.read(body, variablePath);
-//				this.httpSequenceHandle.setVariables(variableName, variableValue.toString());
-//			}
-//
-//		}else if(type.equals(ResultType.XML)){
-//			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//			DocumentBuilder builder = factory.newDocumentBuilder();
-//			org.w3c.dom.Document doc = builder.parse(IOUtils.toInputStream(XmlUtil.replaceChar(body), "UTF-8"));
-//			XPathFactory xPathfactory = XPathFactory.newInstance();
-//			for (String variableName : variables.keySet()) {
-//				String variablePath = variables.get(variableName);
-//
-//				XPath xpath = xPathfactory.newXPath();
-//				XPathExpression expr = xpath.compile(variablePath);
-//				// TODO Retrieve whole XML fragment
-//				String variableValue = expr.evaluate(doc);
-//				this.httpSequenceHandle.setVariables(variableName, variableValue);
-//			}
-//		}
-//
-//	}
+				XPath xpath = xPathfactory.newXPath();
+				XPathExpression expr = xpath.compile(variablePath);
+				// TODO Retrieve whole XML fragment
+				String variableValue = expr.evaluate(doc);
+				this.httpSequenceHandle.setVariables(variableName, variableValue);
+			}
+		}
+		
+	}
 	
 	
 	public String getOutput() {
@@ -208,14 +213,14 @@ public class HttpClientHandler {
 		}
 	}
 	
-//	protected void addRequestParams(RequestBuilder builder) {
-//		HashMap<String, String> map = httpRequest.getParametersMap();
-//		if(map==null || map.size()==0)return;
-//		for (String key : map.keySet()) {
-//			String val = map.get(key);
-//			builder.addParameter(key, useVariable(val));
-//		}
-//	}
+	protected void addRequestParams(RequestBuilder builder) {
+		HashMap<String, String> map = httpRequest.getParametersMap();
+		if(map==null || map.size()==0)return;
+		for (String key : map.keySet()) {
+			String val = map.get(key);
+			builder.addParameter(key, useVariable(val));
+		}
+	}
 	
 	protected String useVariable(String val){
 		if(!val.startsWith("$$")){
@@ -233,13 +238,13 @@ public class HttpClientHandler {
 		}
 	}
 
-//	protected void setHeaders(HttpUriRequest request) {
-//		HashMap<String, String> map = httpRequest.getHeadersMap();
-//		if(map==null || map.size()==0)return;
-//		for (String key : map.keySet()) {
-//			request.addHeader(key, map.get(key));
-//		}
-//	}
+	protected void setHeaders(HttpUriRequest request) {
+		HashMap<String, String> map = httpRequest.getHeadersMap();
+		if(map==null || map.size()==0)return;
+		for (String key : map.keySet()) {
+			request.addHeader(key, map.get(key));
+		}
+	}
 
 	protected CloseableHttpClient createHttpClient() {
 		final RequestConfig requestConfig = requestConfig();
@@ -274,7 +279,7 @@ public class HttpClientHandler {
 	}
 
 	protected boolean isHttps() {
-		return httpRequest.getHttpUrl().toLowerCase().startsWith(HTTPS);
+		return httpRequest.getUrl().toLowerCase().startsWith(HTTPS);
 	}
 
 	protected RequestBuilder createRequestBuilder() {

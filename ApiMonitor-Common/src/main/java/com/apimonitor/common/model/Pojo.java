@@ -1,4 +1,4 @@
-package com.apimonitor.common.entity;
+package com.apimonitor.common.model;
 
 public class Pojo {
 	   private String a; 

@@ -6,8 +6,8 @@ import java.util.Map;
 
 /**
  * 一个动态的 job 信息
- * job实体类
  *
+ * @author Shengzhao Li
  */
 public class DynamicJob {
 
@@ -86,10 +86,10 @@ public class DynamicJob {
     }
 
     /*
-     * 传参数给 执行的 job
-     * 在job中 通过
-     *  context.getMergedJobDataMap().get(key) 获取值
-     * */
+   * 传参数给 执行的 job
+   * 在job中 通过
+   *  context.getMergedJobDataMap().get(key) 获取值
+   * */
     public DynamicJob addJobData(String key, Object value) {
         final JobDetail detail = jobDetail();
         final JobDataMap jobDataMap = detail.getJobDataMap();
@@ -98,10 +98,10 @@ public class DynamicJob {
     }
 
     /*
-     * 传参数给 执行的 job
-     * 在job中 通过
-     *  context.getMergedJobDataMap().get(key) 获取值
-     * */
+   * 传参数给 执行的 job
+   * 在job中 通过
+   *  context.getMergedJobDataMap().get(key) 获取值
+   * */
     public DynamicJob addJobDataMap(Map<String, Object> map) {
         final JobDetail detail = jobDetail();
         final JobDataMap jobDataMap = detail.getJobDataMap();

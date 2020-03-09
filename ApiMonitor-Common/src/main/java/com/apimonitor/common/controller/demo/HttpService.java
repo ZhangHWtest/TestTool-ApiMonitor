@@ -1,8 +1,8 @@
 package com.apimonitor.common.controller.demo;
 
-import com.apimonitor.common.entity.Pojo;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.apimonitor.common.model.Pojo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

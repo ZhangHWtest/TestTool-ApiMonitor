@@ -1,21 +1,28 @@
 package com.apimonitor.common.service;
 
-import com.apimonitor.common.entity.HttpSequence;
-import com.apimonitor.common.entity.HttpSequenceLog;
-import com.baomidou.mybatisplus.extension.service.IService;
 
-/**
- * <p>
- * http序列表 服务类
- * </p>
- *
- * @author zhwtest
- * @since 2020-03-09
- */
-public interface HttpSequenceService extends IService<HttpSequence> {
 
-    HttpSequence getByGuid(String guid);
+import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.model.HttpSequenceLog;
+import com.apimonitor.common.model.HttpSystem;
 
-    void insertLog(HttpSequenceLog httpSequenceLog);
+import java.util.List;
+import java.util.Map;
 
+public interface HttpSequenceService {
+	public HttpSequence getByGuid(String guid);
+
+	public void archived(String guid);
+	public void updateEnabled(HttpSequence httpSequence);
+	public void insert(HttpSequence httpSequence);
+	public void update(HttpSequence httpSequence);
+	public List<Map<String, Object>> getMonitorList();
+	public List<Map<String, Object>> getLogByGuid(String guid);
+	public boolean addHttpSystem(String group);
+	public List<HttpSystem> getAllSystem();
+	
+	public void insertLog(HttpSequenceLog httpSequenceLog);
+	public void deleteLog(String pguid);
+	
+	public void cleanLog(int day);
 }

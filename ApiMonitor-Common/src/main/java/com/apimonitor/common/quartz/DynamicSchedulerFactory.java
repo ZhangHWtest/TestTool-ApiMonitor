@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 import java.util.Date;
 
 /**
- * @author
+ * @author Shengzhao Li
  */
 public final class DynamicSchedulerFactory implements InitializingBean {
 
@@ -17,25 +17,6 @@ public final class DynamicSchedulerFactory implements InitializingBean {
     private static Scheduler scheduler;
 
     public DynamicSchedulerFactory() {
-    }
-
-
-    /*
-     * Resume exist job
-     * */
-    public static boolean resumeJob(DynamicJob existJob) throws SchedulerException {
-        final TriggerKey triggerKey = existJob.triggerKey();
-        boolean result = false;
-        if (scheduler.checkExists(triggerKey)) {
-            final CronTrigger newTrigger = existJob.cronTrigger();
-            final Date date = scheduler.rescheduleJob(triggerKey, newTrigger);
-
-            result = true;
-            LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey, date);
-        } else {
-            LOG.debug("Failed resume exist DynamicJob {}, because not fount triggerKey [{}]", existJob, triggerKey);
-        }
-        return result;
     }
 
 
@@ -72,6 +53,59 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         return scheduler.checkExists(triggerKey);
     }
 
+    /*
+    * Pause exist job
+    * */
+    public static boolean pauseJob(DynamicJob existJob) throws SchedulerException {
+        final TriggerKey triggerKey = existJob.triggerKey();
+        boolean result = false;
+        if (scheduler.checkExists(triggerKey)) {
+            scheduler.pauseTrigger(triggerKey);
+            result = true;
+            LOG.debug("Pause exist DynamicJob {}, triggerKey [{}] successful", existJob, triggerKey);
+        } else {
+            LOG.debug("Failed pause exist DynamicJob {}, because not fount triggerKey [{}]", existJob, triggerKey);
+        }
+        return result;
+    }
+
+
+    /*
+    * Resume exist job
+    * */
+    public static boolean resumeJob(DynamicJob existJob) throws SchedulerException {
+        final TriggerKey triggerKey = existJob.triggerKey();
+        boolean result = false;
+        if (scheduler.checkExists(triggerKey)) {
+            final CronTrigger newTrigger = existJob.cronTrigger();
+            final Date date = scheduler.rescheduleJob(triggerKey, newTrigger);
+
+            result = true;
+            LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey, date);
+        } else {
+            LOG.debug("Failed resume exist DynamicJob {}, because not fount triggerKey [{}]", existJob, triggerKey);
+        }
+        return result;
+    }
+
+
+    /**
+     * 删除掉已经存在的 job
+     *
+     * @param existJob A  DynamicJob which exists in Scheduler
+     * @return True is remove successful
+     * @throws SchedulerException
+     */
+    public static boolean removeJob(DynamicJob existJob) throws SchedulerException {
+        final TriggerKey triggerKey = existJob.triggerKey();
+        boolean result = false;
+        if (scheduler.checkExists(triggerKey)) {
+            result = scheduler.unscheduleJob(triggerKey);
+        }
+
+        LOG.debug("Remove DynamicJob {} result [{}]", existJob, result);
+        return result;
+    }
 
 
     public void setScheduler(Scheduler scheduler) {

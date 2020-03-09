@@ -1,21 +1,20 @@
-package com.apimonitor.common.mapper;
+package com.apimonitor.common.dao;
 
 
-import com.apimonitor.common.entity.HttpSequenceLog;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.apimonitor.common.model.HttpSequenceLog;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Mapper
-public interface HttpSequenceLogMapper extends BaseMapper<HttpSequenceLog> {
+public interface HttpSequenceLogMapper {
 
-//	@Insert("INSERT INTO http_sequence_log(pguid,`status`,`costTime`,log"
-//			+ ")  VALUES("
-//			+"#{httpSequenceLog.pguid},#{httpSequenceLog.status},#{httpSequenceLog.costTime},#{httpSequenceLog.log})")
-//	@Options(useGeneratedKeys = true, keyProperty = "httpSequenceLog.id", keyColumn = "id")
-//	void insert(@Param("httpSequenceLog") HttpSequenceLog httpSequenceLog);
+	@Insert("INSERT INTO http_sequence_log(pguid,`status`,`costTime`,log"
+			+ ")  VALUES("
+			+"#{httpSequenceLog.pguid},#{httpSequenceLog.status},#{httpSequenceLog.costTime},#{httpSequenceLog.log})")
+	@Options(useGeneratedKeys = true, keyProperty = "httpSequenceLog.id", keyColumn = "id")
+	void insert(@Param("httpSequenceLog") HttpSequenceLog httpSequenceLog);
 
 	@Select("SELECT * FROM http_sequence_log")
 	List<HttpSequenceLog> selectAll();
