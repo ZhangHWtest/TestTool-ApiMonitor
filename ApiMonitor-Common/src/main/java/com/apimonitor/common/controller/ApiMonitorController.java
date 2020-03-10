@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/monitor")
+@RequestMapping
 public class ApiMonitorController {
 
 	@Autowired
@@ -27,13 +27,7 @@ public class ApiMonitorController {
 	@Autowired
 	private HttpRequestService httpRequestService;
 	
-//    @RequestMapping("/")
-//    public String main(ModelMap map) {
-//		List<Map<String,Object>> list = httpSequenceService.getMonitorList();
-//		map.addAttribute("monitorList", list);
-//    	return "monitor_list";
-//    }
-    
+
     @PostMapping("/list")
     public Result monitorList(ModelMap map) {
 		List<Map<String,Object>> list = httpSequenceService.getMonitorList();
