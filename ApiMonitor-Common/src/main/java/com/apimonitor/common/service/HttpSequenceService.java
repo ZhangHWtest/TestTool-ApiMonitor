@@ -2,9 +2,9 @@ package com.apimonitor.common.service;
 
 
 
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSequenceLog;
-import com.apimonitor.common.model.HttpSystem;
+import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.entity.HttpSequenceLog;
+import com.apimonitor.common.entity.HttpSystem;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,5 @@ public interface HttpSequenceService {
 	
 	public void insertLog(HttpSequenceLog httpSequenceLog);
 	public void deleteLog(String pguid);
-	
 	public void cleanLog(int day);
 }

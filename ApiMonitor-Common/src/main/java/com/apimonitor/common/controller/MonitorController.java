@@ -1,14 +1,12 @@
 package com.apimonitor.common.controller;
 
 
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestForm;
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSystem;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestForm;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
-import com.apimonitor.system.entity.Model.Findbody;
 import com.apimonitor.system.entity.resultException.Result;
 import com.apimonitor.system.entity.resultException.ResultCode;
 import com.github.pagehelper.StringUtil;
@@ -19,7 +17,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +36,6 @@ public class MonitorController {
 
 	/**
 	 * 获取监控列表
-	 * @param map
-	 * @return
 	 */
     @PostMapping("/list")
     public Result monitorList() {
@@ -51,8 +46,6 @@ public class MonitorController {
 
 	/**
 	 * 添加单个监控
-	 * @param form
-	 * @return
 	 */
     @PostMapping("/saveSingle")
 	public Result saveSingleMonitor(@RequestBody HttpRequestForm form){
@@ -61,9 +54,11 @@ public class MonitorController {
 			if(StringUtil.isEmpty(form.getGuid())){
 				HttpSequence httpSequence = HttpSequence.getHttpSequence(form);
 				httpSequence.setGuid(GuidGenerator.generate());
+
 				HttpRequest httpRequest = HttpRequest.getHttpRequest(form);
 				httpRequest.setGuid(GuidGenerator.generate());
 				httpRequest.setPguid(httpSequence.getGuid());
+
 				httpSequenceService.insert(httpSequence);
 				httpRequestService.insertHttpRequest(httpRequest);
 			}else{
@@ -82,25 +77,54 @@ public class MonitorController {
 
 	/**
 	 * 启用停用监控按钮
-	 * @param request
-	 * @return
 	 */
-	@GetMapping("/enableMonitor")
-	public boolean  enableMonitor(HttpServletRequest request){
-		String guid = request.getParameter("guid");
-		String enabled = request.getParameter("enabled");
-		boolean b;
+	@GetMapping("/enabled")
+	public Result  enableMonitor(@RequestParam(name = "guid") String guid,
+								  @RequestParam(name = "enabled") String enabled){
 		if("true".equals(enabled)){
-			b = httpRequestService.disableMonitor(guid);
+			httpRequestService.disableMonitor(guid);
+			return new Result(ResultCode.SUCCESS);
 		}else{
-			b = httpRequestService.enableMonitor(guid);
+			httpRequestService.enableMonitor(guid);
+			return new Result(ResultCode.SUCCESS);
 		}
-		return b;
+
 	}
 
 	/**
+	 * api请求log，合并monitorLog
+	 */
+	@GetMapping("/apiAndMonitorLog")
+	public Result apiAndMonitorLog(HttpServletRequest request){
+		String guid = request.getParameter("guid");
+		String name = request.getParameter("name");
+		List<Map<String,Object>> sequenceLists = httpSequenceService.getLogByGuid(guid);
+//		for(Map<String,Object> sequenceMap :sequenceLists){
+//			for(String id : sequenceMap.keySet()){
+//				Object value = sequenceMap.get(id);
+//				List<Map<String, Object>> requestLists = httpRequestService.getHttpRequestLogByPid(value.toString());
+//			}
+//		}
+
+		return new Result(ResultCode.SUCCESS,sequenceLists);
+	}
+
+	/**
+	 * 监控log
+	 */
+	@RequestMapping("/monitorLog")
+	public String monitorLog(ModelMap map, HttpServletRequest request) {
+		String guid = request.getParameter("guid");
+		String name = request.getParameter("name");
+		List<Map<String,Object>> list = httpSequenceService.getLogByGuid(guid);
+		map.addAttribute("sequencelogs", list);
+		map.addAttribute("sequenceName", name);
+		return "monitor_log";
+	}
+
+
+	/**
 	 * 获取群组list
-	 * @return
 	 */
 	@GetMapping("/getgroups")
 	public Result addGroup(){
@@ -109,8 +133,6 @@ public class MonitorController {
 
 	/**
 	 *新增群组
-	 * @param systemName
-	 * @return
 	 */
 	@PostMapping("/addGroup")
 	public Result addGroup(@RequestParam("systemName") String systemName){

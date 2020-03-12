@@ -1,12 +1,12 @@
 package com.apimonitor.common.service.impl;
 
 
-import com.apimonitor.common.dao.HttpSequenceLogMapper;
-import com.apimonitor.common.dao.HttpSequenceMapper;
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSequenceLog;
-import com.apimonitor.common.model.HttpSystem;
-import com.apimonitor.common.model.MonitorFrequency;
+import com.apimonitor.common.mapper.HttpSequenceLogMapper;
+import com.apimonitor.common.mapper.HttpSequenceMapper;
+import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.entity.HttpSequenceLog;
+import com.apimonitor.common.entity.HttpSystem;
+import com.apimonitor.common.entity.MonitorFrequency;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.MathUtil;

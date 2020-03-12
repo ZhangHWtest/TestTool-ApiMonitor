@@ -8,16 +8,18 @@ import org.apache.http.util.EntityUtils;
 public class ClientCRUD {
 
 	public final static void main(String[] args) throws Exception {
-
+		// 创建一个客户端
 		CloseableHttpClient httpclient1 = HttpClients.createDefault();
 		CloseableHttpClient httpclient2= HttpClients.createDefault();
 		CloseableHttpClient httpclient3 = HttpClients.createDefault();
 		CloseableHttpClient httpclient4 = HttpClients.createDefault();
 		try {
+			//创建实例
 			HttpGet httpGet = new HttpGet("http://localhost:8080/emp");
 			HttpPost httpPost = new HttpPost("http://localhost:8080/emp");
 			HttpPut HttpPut = new HttpPut("http://localhost:8080/emp");
 			HttpDelete httpdelete = new HttpDelete("http://localhost:8080/emp/1001");
+			//发送请求
 			CloseableHttpResponse response1 = httpclient1.execute(httpGet);
 			CloseableHttpResponse response2 = httpclient2.execute(httpPost);
 			CloseableHttpResponse response3 = httpclient3.execute(HttpPut);

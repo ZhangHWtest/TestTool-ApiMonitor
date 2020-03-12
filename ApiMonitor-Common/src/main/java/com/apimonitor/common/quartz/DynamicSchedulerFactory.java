@@ -21,6 +21,7 @@ public final class DynamicSchedulerFactory implements InitializingBean {
 
 
     /**
+     * 核心方法
      * 注册一个job
      * 1.检查是否有相同的 scheduler(根据 trigger key) ,若有则抛出异常
      * 2.调用 {@link #scheduler} 的 scheduleJob 加入
@@ -45,17 +46,19 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         return true;
     }
 
-    /*
-   * Check the job is exist or not
-   * */
+    /**
+     * 检查当前job是否已经注册到scheduler
+     * Check the job is exist or not
+     */
     public static boolean existJob(DynamicJob job) throws SchedulerException {
         final TriggerKey triggerKey = job.triggerKey();
         return scheduler.checkExists(triggerKey);
     }
 
-    /*
-    * Pause exist job
-    * */
+    /**
+     * 暂停job
+     * Pause exist job
+     */
     public static boolean pauseJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
         boolean result = false;
@@ -70,9 +73,10 @@ public final class DynamicSchedulerFactory implements InitializingBean {
     }
 
 
-    /*
-    * Resume exist job
-    * */
+    /**
+     * 重新开始
+     * Resume exist job
+     */
     public static boolean resumeJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
         boolean result = false;

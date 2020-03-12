@@ -1,7 +1,7 @@
-package com.apimonitor.common.dao;
+package com.apimonitor.common.mapper;
 
 
-import com.apimonitor.common.model.HttpRequest;
+import com.apimonitor.common.entity.HttpRequest;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

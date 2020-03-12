@@ -1,4 +1,4 @@
-package com.apimonitor.common.model;
+package com.apimonitor.common.entity;
 
 import com.github.pagehelper.StringUtil;
 

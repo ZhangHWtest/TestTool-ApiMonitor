@@ -1,8 +1,8 @@
-package com.apimonitor.common.dao;
+package com.apimonitor.common.mapper;
 
 
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSystem;
+import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.entity.HttpSystem;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public interface HttpSequenceMapper {
 	@Update("UPDATE http_sequence t SET t.`archived` = 1 WHERE t.`guid`= #{guid} ")
 	void archived(@Param("guid") String guid);
 
-	@Select("select t.guid,t.`group`,t.type,t.`name`,t.frequency,t.enabled from http_sequence t where t.archived = 0")
+	@Select("select t.id,t.guid,t.`group`,t.type,t.`name`,t.frequency,t.enabled from http_sequence t where t.archived = 0 order by t.id desc" )
 	List<Map<String,Object>> selectMonitorList();
 
 

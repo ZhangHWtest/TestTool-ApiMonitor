@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.apimonitor.common.dao.HttpRequestLogMapper;
-import com.apimonitor.common.dao.HttpRequestMapper;
+import com.apimonitor.common.mapper.HttpRequestLogMapper;
+import com.apimonitor.common.mapper.HttpRequestMapper;
 import com.apimonitor.common.http.client.HttpSequenceHandle;
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestLog;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestLog;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.quartz.DynamicJobManager;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class HttpRequestServiceImpl implements HttpRequestService {
 
 
@@ -35,8 +36,7 @@ public class HttpRequestServiceImpl implements HttpRequestService {
 	private HttpRequestLogMapper httpRequestLogMapper;
 	
 	
-	
-    @Transactional
+
     @Override
     public boolean enableMonitor(String guid) {
     	HttpSequence instance = httpSequenceService.getByGuid(guid);
@@ -44,7 +44,6 @@ public class HttpRequestServiceImpl implements HttpRequestService {
         return dynamicJobManager.enable();
     }
 
-    @Transactional
     @Override
     public boolean disableMonitor(String guid) {
     	HttpSequence instance = httpSequenceService.getByGuid(guid);
@@ -53,7 +52,6 @@ public class HttpRequestServiceImpl implements HttpRequestService {
     }
     
 
-    @Transactional
     @Override
     public boolean deleteMonitor(String guid) {
     	HttpSequence instance = httpSequenceService.getByGuid(guid);
@@ -61,9 +59,7 @@ public class HttpRequestServiceImpl implements HttpRequestService {
         return dynamicJobManager.delete();
     }
     
-    
-    
-    @Transactional
+
     @Override
     public void executeRequest(String guid) {
     	HttpSequence instance = httpSequenceService.getByGuid(guid);

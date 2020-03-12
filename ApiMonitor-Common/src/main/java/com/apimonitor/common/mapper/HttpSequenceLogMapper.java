@@ -1,7 +1,7 @@
-package com.apimonitor.common.dao;
+package com.apimonitor.common.mapper;
 
 
-import com.apimonitor.common.model.HttpSequenceLog;
+import com.apimonitor.common.entity.HttpSequenceLog;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

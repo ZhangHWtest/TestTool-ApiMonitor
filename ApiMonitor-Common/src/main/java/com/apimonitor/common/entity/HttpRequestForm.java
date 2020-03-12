@@ -1,9 +1,9 @@
-package com.apimonitor.common.model;
+package com.apimonitor.common.entity;
 
-import com.apimonitor.common.model.HttpRequest.CheckCondition;
-import com.apimonitor.common.model.HttpRequest.HttpMethod;
-import com.apimonitor.common.model.HttpRequest.ResultType;
-import com.apimonitor.common.model.HttpSequence.MonitorType;
+import com.apimonitor.common.entity.HttpRequest.CheckCondition;
+import com.apimonitor.common.entity.HttpRequest.HttpMethod;
+import com.apimonitor.common.entity.HttpRequest.ResultType;
+import com.apimonitor.common.entity.HttpSequence.MonitorType;
 
 import java.util.Date;
 import java.util.HashMap;

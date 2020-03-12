@@ -17,18 +17,14 @@ public class ScheduleFactoryConfig {
     @Value("${scheduler.auto.startup}")
     private boolean schedulerAutoStartup;
 
-
     @Bean
 //    @Lazy
     public SchedulerFactoryBean scheduler(DataSource dataSource) throws Exception {
         SchedulerFactoryBean factoryBean = new SchedulerFactoryBean();
-
         factoryBean.setDataSource(dataSource);
         factoryBean.setAutoStartup(schedulerAutoStartup);
-
         return factoryBean;
     }
-
 
     /**
      * dynamic scheduler factory

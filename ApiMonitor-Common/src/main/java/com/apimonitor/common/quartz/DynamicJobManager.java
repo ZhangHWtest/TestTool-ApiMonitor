@@ -3,7 +3,7 @@ package com.apimonitor.common.quartz;
 
 import com.apimonitor.common.context.BeanProvider;
 import com.apimonitor.common.job.HttpMonitoringJob;
-import com.apimonitor.common.model.HttpSequence;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.service.HttpRequestService;
 import org.apache.commons.lang.StringUtils;
 import org.quartz.SchedulerException;
@@ -35,6 +35,12 @@ public class DynamicJobManager {
         this.instance = instance;
     }
 
+
+    /**
+     * 判断监控是否启用中
+     * @return
+     */
+
     public boolean enable() {
         //final ApplicationInstance instance = instanceRepository.findByGuid(guid, ApplicationInstance.class);
         if (instance.isEnabled()) {
@@ -56,6 +62,14 @@ public class DynamicJobManager {
         return true;
     }
 
+    /**
+     * 1、接收，为启用中的 监控，
+     * 2、获取job 策略
+     * 3、并将它加入job
+     * @param instance
+     * @return
+     */
+
     private boolean startupMonitoringJob(HttpSequence instance) {
         final String jobName = getAndSetJobName(instance);
 
@@ -66,6 +80,13 @@ public class DynamicJobManager {
 
         return executeStartup(instance, job);
     }
+
+    /**
+     * 将JobDetail和Trigger 注册到Scheduler 调度器容器
+     * @param instance
+     * @param job
+     * @return
+     */
 
     private boolean executeStartup(HttpSequence instance, DynamicJob job) {
         boolean result = false;

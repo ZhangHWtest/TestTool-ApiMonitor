@@ -1,6 +1,5 @@
 package com.apimonitor.common.http.client;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.cert.CertificateException;
@@ -32,16 +31,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONPath;
-import com.apimonitor.common.model.Application;
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequest.HttpMethod;
-import com.apimonitor.common.model.HttpRequest.ResultType;
-import com.apimonitor.common.model.HttpRequestLog;
+import com.apimonitor.common.entity.Application;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequest.HttpMethod;
+import com.apimonitor.common.entity.HttpRequest.ResultType;
+import com.apimonitor.common.entity.HttpRequestLog;
 import com.apimonitor.common.util.XmlUtil;
 import com.github.pagehelper.StringUtil;
 import com.google.common.xml.XmlEscapers;
-
-
 
 
 public class HttpClientHandler {
@@ -116,8 +113,14 @@ public class HttpClientHandler {
 		requestLog.setLog(output);
 		return requestLog;
 	}
-	
 
+	/**
+	 * 核心方法，CloseableHttpClient  execute方法创建请求，但是是request
+	 * request 由
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
 	protected CloseableHttpResponse sendRequest() throws ClientProtocolException, IOException {
 		RequestBuilder builder = createRequestBuilder();
 		addRequestParams(builder);
@@ -140,7 +143,13 @@ public class HttpClientHandler {
 		int status = httpResponse.getStatusLine().getStatusCode();
 		return status;
 	}
-	
+
+	/**
+	 * 根据httpRequest中的getConditionType 校验类型，决定怎么检查结果
+	 * @param body
+	 * @param statusCode
+	 * @throws Exception
+	 */
 	protected void validResponse(String body, String statusCode) throws Exception {
 		switch (httpRequest.getConditionType()) {
 		case CONTAINS:
@@ -246,6 +255,11 @@ public class HttpClientHandler {
 		}
 	}
 
+	/**
+	 * 核心方法，创建一个较小的httpClient:CloseableHttpClient
+	 * ClosableHttpClient
+	 * @return
+	 */
 	protected CloseableHttpClient createHttpClient() {
 		final RequestConfig requestConfig = requestConfig();
 		HttpClientBuilder httpClientBuilder;

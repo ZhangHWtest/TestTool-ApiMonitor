@@ -1,4 +1,4 @@
-package com.apimonitor.common.model;
+package com.apimonitor.common.entity;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.Assert;

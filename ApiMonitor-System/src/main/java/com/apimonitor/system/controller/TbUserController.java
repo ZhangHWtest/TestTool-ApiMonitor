@@ -148,7 +148,7 @@ public class TbUserController {
      * 创建用户
      */
     @PostMapping("/create")
-    public Result createUser(@RequestBody TbUser createUser, HttpServletRequest request){
+    public Result createUser(@RequestBody TbUser createUser){
         //接口传过来是 updateUser，补全数据
         createUser.setPassword(encoder.encode(createUser.getPassword()));
         createUser.setCreateTime(LocalDateTime.now());
@@ -164,7 +164,7 @@ public class TbUserController {
 
 
     @GetMapping("/getuserbyid/{id}")
-    public Result getUserById(@PathVariable(name = "id") Long id, HttpServletRequest request){
+    public Result getUserById(@PathVariable(name = "id") Long id){
             TbUser getUserById =tbUserService.getById(id);
             Map<String, Object> userLists = new LinkedHashMap<>();
             userLists.put("id",getUserById.getId());

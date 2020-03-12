@@ -14,18 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.apimonitor.common.http.client.HttpSequenceHandle;
-import com.apimonitor.common.model.APITestForm;
-import com.apimonitor.common.model.HttpRequest;
-import com.apimonitor.common.model.HttpRequestForm;
-import com.apimonitor.common.model.HttpRequestLog;
-import com.apimonitor.common.model.HttpSequence;
-import com.apimonitor.common.model.HttpSequence.MonitorType;
-import com.apimonitor.common.model.HttpSystem;
-import com.apimonitor.common.model.MonitorFrequency;
+import com.apimonitor.common.entity.APITestForm;
+import com.apimonitor.common.entity.HttpRequest;
+import com.apimonitor.common.entity.HttpRequestForm;
+import com.apimonitor.common.entity.HttpRequestLog;
+import com.apimonitor.common.entity.HttpSequence;
+import com.apimonitor.common.entity.HttpSequence.MonitorType;
+import com.apimonitor.common.entity.HttpSystem;
+import com.apimonitor.common.entity.MonitorFrequency;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
-import com.apimonitor.common.util.PostManResolver;
 import com.github.pagehelper.StringUtil;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.apimonitor.common.model;
+package com.apimonitor.common.entity;
 
 public class APITestForm {
 
