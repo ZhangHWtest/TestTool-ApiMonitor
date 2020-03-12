@@ -1,11 +1,26 @@
 package com.apimonitor.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public class HttpRequestLog {
-	
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("http_request_log")
+public class HttpRequestLog implements Serializable {
 
-	private int id;
+
+	@TableId(value = "id", type = IdType.AUTO)
+	private Integer id;
 	
 	private int pid;
 	
@@ -14,16 +29,28 @@ public class HttpRequestLog {
 	private String pguid;
 
 	private boolean status;//请求状态: false-失败,true-成功
-	
-    private long costTime;//响应时间
 
-	private String statusCode;//响应状态码：200-成功
-	
-    private String responseBody;//响应体
+	/**
+	 * 请求耗时
+	 */
+	@TableField("costTime")
+	private Integer costTime;
+
+	/**
+	 * 响应状态码
+	 */
+	@TableField("statusCode")
+	private String statusCode;
+
+	/**
+	 * 响应结果
+	 */
+	@TableField("responseBody")
+	private String responseBody;
     
     private String log;
-
-    private Date createTime;
+	@TableField("createTime")
+    private LocalDateTime createTime;
     
     
 	public int getId() {
@@ -71,7 +98,7 @@ public class HttpRequestLog {
 		return costTime;
 	}
 
-	public void setCostTime(long costTime) {
+	public void setCostTime(Integer costTime) {
 		this.costTime = costTime;
 	}
 
@@ -100,11 +127,11 @@ public class HttpRequestLog {
 		this.log = log;
 	}
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
     @Override

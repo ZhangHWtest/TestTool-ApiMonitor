@@ -2,23 +2,24 @@ package com.apimonitor.common.mapper;
 
 
 import com.apimonitor.common.entity.HttpRequest;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
-public interface HttpRequestMapper {
+public interface HttpRequestMapper extends BaseMapper<HttpRequest> {
 
-	@Insert("INSERT INTO http_request(pguid,guid,sort,url,httpMethod,"
-			+ "headers,parameters,maxConnectionSeconds,"
-			+ "conditionType,`condition`,resultType,`variables`,remark"
-			+ ")  VALUES("
-			+"#{httpRequest.pguid},#{httpRequest.guid},#{httpRequest.sort},"
-			+ "#{httpRequest.url},#{httpRequest.httpMethod},"
-			+ "#{httpRequest.headers},#{httpRequest.parameters},#{httpRequest.maxConnectionSeconds},"
-			+ "#{httpRequest.conditionType},#{httpRequest.condition},#{httpRequest.resultType},"
-			+ "#{httpRequest.variables},#{httpRequest.remark})")
-	void insert(@Param("httpRequest") HttpRequest httpRequest);
+//	@Insert("INSERT INTO http_request(pguid,guid,sort,url,httpMethod,"
+//			+ "headers,parameters,maxConnectionSeconds,"
+//			+ "conditionType,`condition`,resultType,`variables`,remark"
+//			+ ")  VALUES("
+//			+"#{httpRequest.pguid},#{httpRequest.guid},#{httpRequest.sort},"
+//			+ "#{httpRequest.url},#{httpRequest.httpMethod},"
+//			+ "#{httpRequest.headers},#{httpRequest.parameters},#{httpRequest.maxConnectionSeconds},"
+//			+ "#{httpRequest.conditionType},#{httpRequest.condition},#{httpRequest.resultType},"
+//			+ "#{httpRequest.variables},#{httpRequest.remark})")
+//	void insert(@Param("httpRequest") HttpRequest httpRequest);
 
 	@Update("update http_request set sort=#{httpRequest.sort},url=#{httpRequest.url},httpMethod=#{httpRequest.httpMethod}"
 			+ ",headers=#{httpRequest.headers},parameters=#{httpRequest.parameters},maxConnectionSeconds=#{httpRequest.maxConnectionSeconds}"

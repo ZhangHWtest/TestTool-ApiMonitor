@@ -2,7 +2,7 @@ package com.apimonitor.common.controller;
 
 
 import com.apimonitor.common.entity.HttpRequest;
-import com.apimonitor.common.entity.HttpRequestForm;
+import com.apimonitor.common.entity.modelForm.HttpRequestForm;
 import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
@@ -59,7 +59,7 @@ public class MonitorController {
 				httpRequest.setGuid(GuidGenerator.generate());
 				httpRequest.setPguid(httpSequence.getGuid());
 
-				httpSequenceService.insert(httpSequence);
+				httpSequenceService.insertMyHttpSequest(httpSequence);
 				httpRequestService.insertHttpRequest(httpRequest);
 			}else{
 				//修改
@@ -99,13 +99,6 @@ public class MonitorController {
 		String guid = request.getParameter("guid");
 		String name = request.getParameter("name");
 		List<Map<String,Object>> sequenceLists = httpSequenceService.getLogByGuid(guid);
-//		for(Map<String,Object> sequenceMap :sequenceLists){
-//			for(String id : sequenceMap.keySet()){
-//				Object value = sequenceMap.get(id);
-//				List<Map<String, Object>> requestLists = httpRequestService.getHttpRequestLogByPid(value.toString());
-//			}
-//		}
-
 		return new Result(ResultCode.SUCCESS,sequenceLists);
 	}
 

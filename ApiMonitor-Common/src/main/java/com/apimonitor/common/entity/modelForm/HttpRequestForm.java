@@ -1,8 +1,10 @@
-package com.apimonitor.common.entity;
+package com.apimonitor.common.entity.modelForm;
 
+import com.apimonitor.common.entity.HttpRequest;
 import com.apimonitor.common.entity.HttpRequest.CheckCondition;
 import com.apimonitor.common.entity.HttpRequest.HttpMethod;
 import com.apimonitor.common.entity.HttpRequest.ResultType;
+import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.entity.HttpSequence.MonitorType;
 
 import java.util.Date;

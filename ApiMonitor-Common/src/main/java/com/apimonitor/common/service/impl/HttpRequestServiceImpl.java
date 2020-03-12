@@ -1,5 +1,6 @@
 package com.apimonitor.common.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class HttpRequestServiceImpl implements HttpRequestService {
+public class HttpRequestServiceImpl extends ServiceImpl<HttpRequestMapper, HttpRequest> implements HttpRequestService  {
 
 
 

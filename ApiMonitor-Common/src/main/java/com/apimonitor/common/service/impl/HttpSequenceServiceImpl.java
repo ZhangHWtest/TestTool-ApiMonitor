@@ -6,10 +6,11 @@ import com.apimonitor.common.mapper.HttpSequenceMapper;
 import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.entity.HttpSequenceLog;
 import com.apimonitor.common.entity.HttpSystem;
-import com.apimonitor.common.entity.MonitorFrequency;
+import com.apimonitor.common.entity.modelForm.MonitorFrequency;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
 import com.apimonitor.common.util.MathUtil;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class HttpSequenceServiceImpl implements HttpSequenceService {
+public class HttpSequenceServiceImpl extends ServiceImpl<HttpSequenceMapper, HttpSequence> implements HttpSequenceService {
+
 
 	@Autowired
 	private HttpSequenceMapper httpSequenceMapper;
@@ -41,7 +43,7 @@ public class HttpSequenceServiceImpl implements HttpSequenceService {
 	}
 	
 	@Override
-	public void insert(HttpSequence httpSequence){
+	public void insertMyHttpSequest(HttpSequence httpSequence){
 		if(StringUtil.isEmpty(httpSequence.getGuid())){
 			httpSequence.setGuid(GuidGenerator.generate());
 		}

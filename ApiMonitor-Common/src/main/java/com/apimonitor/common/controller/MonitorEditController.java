@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.apimonitor.common.http.client.HttpSequenceHandle;
-import com.apimonitor.common.entity.APITestForm;
+import com.apimonitor.common.entity.modelForm.APITestForm;
 import com.apimonitor.common.entity.HttpRequest;
-import com.apimonitor.common.entity.HttpRequestForm;
+import com.apimonitor.common.entity.modelForm.HttpRequestForm;
 import com.apimonitor.common.entity.HttpRequestLog;
 import com.apimonitor.common.entity.HttpSequence;
 import com.apimonitor.common.entity.HttpSequence.MonitorType;
 import com.apimonitor.common.entity.HttpSystem;
-import com.apimonitor.common.entity.MonitorFrequency;
+import com.apimonitor.common.entity.modelForm.MonitorFrequency;
 import com.apimonitor.common.service.HttpRequestService;
 import com.apimonitor.common.service.HttpSequenceService;
 import com.apimonitor.common.util.GuidGenerator;
@@ -62,32 +62,6 @@ public class MonitorEditController {
 		return httpSequenceService.getAllSystem();
     }
 
-	@ResponseBody
-    @RequestMapping(value="/saveSingleMonitor",method= RequestMethod.POST)
-    public boolean saveSingleMonitor(@ModelAttribute HttpRequestForm form){
-		try{
-			//添加
-			if(StringUtil.isEmpty(form.getGuid())){
-				HttpSequence httpSequence = HttpSequence.getHttpSequence(form);
-				httpSequence.setGuid(GuidGenerator.generate());
-				HttpRequest httpRequest = HttpRequest.getHttpRequest(form);
-				httpRequest.setGuid(GuidGenerator.generate());
-				httpRequest.setPguid(httpSequence.getGuid());
-				httpSequenceService.insert(httpSequence);
-				httpRequestService.insertHttpRequest(httpRequest);
-			}else{
-				//修改
-				HttpSequence httpSequence = HttpSequence.getHttpSequence(form);
-				HttpRequest httpRequest = HttpRequest.getHttpRequest(form);
-				httpSequenceService.update(httpSequence);
-				httpRequestService.updateHttpRequest(httpRequest);
-			}
-	        return true;
-		}catch(Exception e){
-			LOGGER.error("错误日志",e);
-			return false;
-		}
-    }
 
     @RequestMapping("/editSingleMonitor")
     public String editSingleMonitor(ModelMap map, HttpServletRequest request) {
@@ -120,51 +94,7 @@ public class MonitorEditController {
     	return "monitor_add_sequence";
     }
 
-	@ResponseBody
-    @RequestMapping(value="/saveSequenceMonitor",method= RequestMethod.POST)
-    public boolean saveSequenceMonitor(@ModelAttribute HttpSequence httpSequence){
-		try{
-			//添加
-			if(StringUtil.isEmpty(httpSequence.getGuid())){
-				httpSequence.setGuid(GuidGenerator.generate());
-				List<HttpRequest> httpRequests = httpSequence.getHttpRequest();
-				for(HttpRequest request : httpRequests){
-					request.setPguid(httpSequence.getGuid());
-					httpRequestService.insertHttpRequest(request);
-				}
-				httpSequenceService.insert(httpSequence);
-			}else{
-				//修改
-				List<HttpRequest> httpRequests = httpSequence.getHttpRequest();
-				for(HttpRequest request : httpRequests){
-					request.setPguid(httpSequence.getGuid());
-					if(StringUtil.isEmpty(request.getGuid())){
-						httpRequestService.insertHttpRequest(request);
-					}else{
-						httpRequestService.updateHttpRequest(request);
-					}
-				}
-				httpSequenceService.update(httpSequence);
-			}
-	        return true;
-		}catch(Exception e){
-			LOGGER.error("错误日志",e);
-			return false;
-		}
-    }
 
-//	@ResponseBody
-//	@RequestMapping(value="/resolverPostMan",method=RequestMethod.POST)
-//	public ArrayList<HttpRequest> resolverPostMan(@RequestParam("postmanScript") String postmanScript){
-//		ArrayList<HttpRequest> list = new ArrayList<HttpRequest>();
-//		try{
-//			list = PostManResolver.readV2FromJsonText(postmanScript);
-//			return list;
-//		}catch(Exception e){
-//			LOGGER.error("错误日志",e);
-//			return null;
-//		}
-//	}
 	
 	@ResponseBody
     @RequestMapping(value="/testApi",method= RequestMethod.POST)

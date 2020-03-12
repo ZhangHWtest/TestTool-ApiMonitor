@@ -4,11 +4,12 @@ package com.apimonitor.common.service;
 
 import com.apimonitor.common.entity.HttpRequest;
 import com.apimonitor.common.entity.HttpSequence;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 import java.util.Map;
 
-public interface HttpRequestService {
+public interface HttpRequestService extends IService<HttpRequest> {
 
 	boolean enableMonitor(String guid);
 

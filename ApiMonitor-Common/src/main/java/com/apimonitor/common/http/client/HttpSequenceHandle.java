@@ -60,7 +60,7 @@ public class HttpSequenceHandle {
 			}
 		}
 		httpSequenceLog.setPguid(httpSequence.getGuid());
-		httpSequenceLog.setCostTime(costTime);
+		httpSequenceLog.setCostTime((int)costTime);
 		httpSequenceLog.setLog(tempLog.toString());
 		httpSequenceLog.setStatus(StringUtil.isEmpty(tempLog.toString()));
 	}

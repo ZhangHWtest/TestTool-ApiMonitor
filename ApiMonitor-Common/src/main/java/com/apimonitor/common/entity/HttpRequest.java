@@ -1,12 +1,26 @@
 package com.apimonitor.common.entity;
 
+import com.apimonitor.common.entity.modelForm.HttpRequestForm;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.github.pagehelper.StringUtil;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 
 
-public class HttpRequest {
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("http_request")
+public class HttpRequest implements Serializable {
 
     private static final long serialVersionUID = 1826152029135090793L;
 
@@ -35,9 +49,38 @@ public class HttpRequest {
 	
 	public enum ResultType {
 		XML, JSON
-	}    
-	
-	private int id;
+	}
+
+	private HashMap<String,String> headersMap = new HashMap<String,String>();//请求头部
+
+	private HashMap<String,String> parametersMap = new HashMap<String,String>();//请求参数
+
+	private HashMap<String,String> variablesMap = new HashMap<String,String>();//变量
+
+
+	public String mapToString(HashMap<String, String> map){
+		if(map == null || map.size() == 0)return null;
+		StringBuffer sb = new StringBuffer();
+		for (String key : map.keySet()) {
+			if(sb.length()!=0)sb.append("\r\n");
+			sb.append(key).append("::").append(map.get(key));
+		}
+		return sb.toString();
+	}
+
+	public HashMap<String, String> stringToMap(String text){
+		if(StringUtil.isEmpty(text))return null;
+		HashMap<String, String> map = new HashMap<String, String>();
+		String[] strArray = text.split("\r\n");
+		for(String str : strArray){
+			String[] header = str.split("::");
+			map.put(header[0], header[1]);
+		}
+		return map;
+	}
+
+	@TableId(value = "id", type = IdType.AUTO)
+	private Integer id;
 	
 	private String guid;
 
@@ -47,33 +90,36 @@ public class HttpRequest {
 
     private String url;//地址
 
-    private String remark;//备注
-
-	private CheckCondition conditionType = CheckCondition.DEFAULT;//结果校验类型（包含，不包含，状态码，默认200）
-
-	private String condition;//结果校验内容
-	
-	private ResultType resultType;//返回结果类型（xml，json）
-	
+	@TableField("httpMethod")
 	private HttpMethod httpMethod;//http方法（get,head,post,put,delete）
 
 	private String headers;
 
 	private String parameters;
 
+	@TableField("maxConnectionSeconds")
+	private int maxConnectionSeconds = 30;//最大超时时间
+
+	@TableField("conditionType")
+	private CheckCondition conditionType = CheckCondition.DEFAULT;//结果校验类型（包含，不包含，状态码，默认200）
+
+	private String condition;//结果校验内容
+
+	@TableField("resultType")
+	private ResultType resultType;//返回结果类型（xml，json）
+
+	/**
+	 * 变量定义，格式（key::value\nkey::value）
+	 */
 	private String variables;
-	
-	private HashMap<String,String> headersMap = new HashMap<String,String>();//请求头部
 
-	private HashMap<String,String> parametersMap = new HashMap<String,String>();//请求参数
-	
-	private HashMap<String,String> variablesMap = new HashMap<String,String>();//变量
-	
-    private int maxConnectionSeconds = 30;//最大超时时间
+	private String remark;//备注
+	@TableField("createTime")
+	private LocalDateTime createTime;
 
-    private Date createTime;
+	private boolean archived;//是否删除（0-有效，1-删除）
 
-    private boolean archived;//是否删除（0-有效，1-删除）
+
     
 	public int getId() {
 		return id;
@@ -219,11 +265,11 @@ public class HttpRequest {
 		this.condition = condition;
 	}
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
 
@@ -234,27 +280,7 @@ public class HttpRequest {
 	public void setArchived(boolean archived) {
 		this.archived = archived;
 	}
-	
-	public String mapToString(HashMap<String, String> map){
-		if(map == null || map.size() == 0)return null;
-		StringBuffer sb = new StringBuffer();
-		for (String key : map.keySet()) {
-			if(sb.length()!=0)sb.append("\r\n");
-			sb.append(key).append("::").append(map.get(key));
-		}
-		return sb.toString();
-	}
 
-	public HashMap<String, String> stringToMap(String text){
-		if(StringUtil.isEmpty(text))return null;
-		HashMap<String, String> map = new HashMap<String, String>();
-		String[] strArray = text.split("\r\n");
-		for(String str : strArray){
-			String[] header = str.split("::");
-			map.put(header[0], header[1]);
-		}
-		return map;
-	}
 	
 	
 	

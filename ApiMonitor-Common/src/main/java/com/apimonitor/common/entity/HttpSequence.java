@@ -1,10 +1,26 @@
 package com.apimonitor.common.entity;
 
-import java.util.Date;
+import com.apimonitor.common.entity.modelForm.HttpRequestForm;
+import com.apimonitor.common.entity.modelForm.MonitorFrequency;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
-public class HttpSequence {
+
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("http_sequence")
+public class HttpSequence implements Serializable {
 
 	public HttpSequence(){
 		
@@ -22,9 +38,14 @@ public class HttpSequence {
 	
 	public enum MonitorType {
 		SINGLE, SEQUENCE
-	}    
-	
-	private int id;
+	}
+	private List<HttpRequest> httpRequest;
+
+	private HashMap<String,String> variableResultMap = new HashMap<String,String>();
+
+
+	@TableId(value = "id", type = IdType.AUTO)
+	private Integer id;
 	
 	private String guid;
 	
@@ -40,22 +61,21 @@ public class HttpSequence {
 	
     private String remark;
 
-	private List<HttpRequest> httpRequest;
-	
-	private HashMap<String,String> variableResultMap = new HashMap<String,String>();
-	
-
+	@TableField("jobName")
     private String jobName;//quartz调度的job名称
 
     private boolean enabled;//是否启动监控
 
     private boolean archived;//是否删除（0-有效，1-删除）
 
-    private Date createTime;
+	@TableField("createTime")
+	private LocalDateTime createTime;
     
 	public String getName() {
 		return name;
 	}
+
+
 
 	public void setName(String name) {
 		this.name = name;
@@ -151,11 +171,11 @@ public class HttpSequence {
 		this.enabled = enabled;
 	}
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
 

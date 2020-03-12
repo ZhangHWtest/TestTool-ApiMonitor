@@ -1,20 +1,50 @@
 package com.apimonitor.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public class HttpSequenceLog {
 
-	private int id;
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("http_sequence_log")
+public class HttpSequenceLog implements Serializable {
+
+	private static final long serialVersionUID=1L;
+
+	@TableId(value = "id", type = IdType.AUTO)
+	private Integer id;
+
 	
 	private String pguid;
 	
 	private boolean status;//请求状态: false-失败,true-成功
-	
-    private long costTime;//响应时间
-    
-    private String log;
 
-    private Date createTime;
+	/**
+	 * 请求耗时
+	 */
+	@TableField("costTime")
+	private Integer costTime;
+
+	/**
+	 * 请求日志
+	 */
+	private String log;
+
+	/**
+	 * 创建时间
+	 */
+	@TableField("createTime")
+	private LocalDateTime createTime;
     
 	public int getId() {
 		return id;
@@ -44,7 +74,7 @@ public class HttpSequenceLog {
 		return costTime;
 	}
 
-	public void setCostTime(long costTime) {
+	public void setCostTime(Integer costTime) {
 		this.costTime = costTime;
 	}
 
@@ -56,11 +86,11 @@ public class HttpSequenceLog {
 		this.log = log;
 	}
 	
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
 	}
 

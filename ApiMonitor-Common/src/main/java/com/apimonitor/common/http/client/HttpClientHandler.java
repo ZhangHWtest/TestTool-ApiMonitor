@@ -31,7 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.alibaba.fastjson.JSONPath;
-import com.apimonitor.common.entity.Application;
+import com.apimonitor.common.entity.modelForm.Application;
 import com.apimonitor.common.entity.HttpRequest;
 import com.apimonitor.common.entity.HttpRequest.HttpMethod;
 import com.apimonitor.common.entity.HttpRequest.ResultType;
@@ -106,7 +106,7 @@ public class HttpClientHandler {
 		}
 
 		HttpRequestLog requestLog = new HttpRequestLog();
-		requestLog.setCostTime(System.currentTimeMillis() - start);
+		requestLog.setCostTime((int) System.currentTimeMillis() - (int)start);
 		requestLog.setStatus(StringUtil.isEmpty(output));
 		requestLog.setStatusCode(statusCode);
 		requestLog.setResponseBody(body);
