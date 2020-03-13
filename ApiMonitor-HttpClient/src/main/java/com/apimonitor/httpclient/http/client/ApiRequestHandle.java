@@ -9,17 +9,24 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class JobInfoHandle {
+public class ApiRequestHandle {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(JobInfoHandle.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ApiRequestHandle.class);
+
+    private ApiRequest apiRequest;
+    public ApiRequestLog apiRequestLog;
 
 
-    private JobInfo jobInfo;
+    public HashMap<String,String> variables = new java.util.HashMap<String,String>();
 
-    public JobInfoHandle(JobInfo jobInfo) {
-        this.jobInfo = jobInfo;
+    public ArrayList<ApiRequestLog> apiRequestLogList = new ArrayList<ApiRequestLog>();
+
+    public ApiRequestHandle(ApiRequest apiRequest) {
+        this.apiRequest = apiRequest;
     }
 
     //cookie保存
@@ -27,15 +34,13 @@ public class JobInfoHandle {
 
     // 这是执行方法  执行的ApiRequest
     public void execute(){
-//        List<ApiRequest> requests = ApiRequest.getHttpRequest();
-//        for(ApiRequest request : requests){
-            HttpClientHandler handle = new HttpClientHandler(jobInfo,this);
+            HttpClientHandler handle = new HttpClientHandler(apiRequest,this);
             ApiRequestLog apiRequestLog = handle.execute();
-            apiRequestLog.setJobId(jobInfo.getJobId());
-            apiRequestLog.setJobInfoId(jobInfo.getId().toString());
-//            httpRequestLogList.add(requestLog);
+            apiRequestLog.setJobId(apiRequest.getJobId());
+            apiRequestLog.setJobInfoId(apiRequest.getId().toString());
+            apiRequestLogList.add(apiRequestLog);
 //        }
-         apiRequestLog();
+        apiRequestLog();
 
     }
 
@@ -43,7 +48,7 @@ public class JobInfoHandle {
         apiRequestLog = new ApiRequestLog();
         StringBuffer tempLog = new StringBuffer();
         long costTime = 0l;
-        for(HttpRequestLog log : httpRequestLogList){
+        for(ApiRequestLog log : apiRequestLogList){
             costTime += log.getCostTime();
             if(StringUtil.isNotEmpty(log.getLog())){
                 if(tempLog.length() != 0){
@@ -52,10 +57,26 @@ public class JobInfoHandle {
                 tempLog.append(log.getLog());
             }
         }
-        httpSequenceLog.setPguid(httpSequence.getGuid());
-        httpSequenceLog.setCostTime(costTime);
-        httpSequenceLog.setLog(tempLog.toString());
-        httpSequenceLog.setStatus(StringUtil.isEmpty(tempLog.toString()));
+        apiRequestLog.setJobId(apiRequest.getJobId());
+        apiRequestLog.setCostTime((int) costTime);
+        apiRequestLog.setLog(tempLog.toString());
+        apiRequestLog.setStatus(1);
     }
+
+
+
+    public void setVariables(String key, String value){
+        variables.put(key, value);
+    }
+
+    public String getVariables(String val){
+        for (String variableName : variables.keySet()) {
+            if(variableName.equals(val)){
+                return variables.get(variableName);
+            }
+        }
+        return null;
+    }
+
 
 }

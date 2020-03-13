@@ -1,12 +1,12 @@
 package com.apimonitor.httpclient.http.client;
 
 import com.alibaba.fastjson.JSONPath;
-import com.ecar.apm.model.Application;
-import com.ecar.apm.model.HttpRequest;
-import com.ecar.apm.model.HttpRequest.HttpMethod;
-import com.ecar.apm.model.HttpRequest.ResultType;
-import com.ecar.apm.model.HttpRequestLog;
-import com.ecar.apm.util.XmlUtil;
+import com.apimonitor.httpclient.entity.ApiRequest;
+import com.apimonitor.httpclient.entity.ApiRequestLog;
+import com.apimonitor.httpclient.entity.JobInfo;
+import com.apimonitor.httpclient.entity.model.Application;
+import com.apimonitor.httpclient.utils.StrUtils;
+import com.apimonitor.httpclient.utils.XmlUtil;
 import com.github.pagehelper.StringUtil;
 import com.google.common.xml.XmlEscapers;
 import org.apache.commons.io.IOUtils;
@@ -51,21 +51,20 @@ public class HttpClientHandler {
 
 	protected static HttpsTrustManager httpsTrustManager = new HttpsTrustManager();
 
-	private HttpSequenceHandle httpSequenceHandle;
+	private ApiRequestHandle apiRequestHandle;
 	
 	private HttpEntity httpEntity;
 
-	private HttpRequest httpRequest;
-	
-	
+	private JobInfo jobInfo;
+
+	private ApiRequest apiRequest;
+
 	protected String output;
-	
 
 	
-	
-	public HttpClientHandler(HttpRequest httpRequest, HttpSequenceHandle httpSequenceHandle) {
-		this.httpRequest = httpRequest;
-		this.httpSequenceHandle = httpSequenceHandle;
+	public HttpClientHandler(ApiRequest apiRequest,  ApiRequestHandle apiRequestHandle) {
+		this.apiRequest = apiRequest;
+		this.apiRequestHandle = apiRequestHandle;
 	}
 
 	public void httpEntity(HttpEntity httpEntity) {
@@ -86,9 +85,8 @@ public class HttpClientHandler {
 	}
 	
 	
-	public HttpRequestLog execute(){
-
-		long start = System.currentTimeMillis();
+	public ApiRequestLog execute(){
+		int start = (int)System.currentTimeMillis();
 		String statusCode = null;
 		String body = null;
 		try{
@@ -100,16 +98,19 @@ public class HttpClientHandler {
 			handleVariables(body);
 		}catch(Exception e){
 			appendMessage(e.toString());
-			LOGGER.error("Send request to url[" + httpRequest.getUrl() + "] failed", e);
+			LOGGER.error("Send request to url[" + apiRequest.getApiUrl() + "] failed", e);
 		}
 
-		HttpRequestLog requestLog = new HttpRequestLog();
-		requestLog.setCostTime(System.currentTimeMillis() - start);
-		requestLog.setStatus(StringUtil.isEmpty(output));
-		requestLog.setStatusCode(statusCode);
-		requestLog.setResponseBody(body);
-		requestLog.setLog(output);
-		return requestLog;
+		ApiRequestLog apiRequestLog = new ApiRequestLog();
+		apiRequestLog.setCostTime((int)System.currentTimeMillis() - start);
+		if(StringUtil.isEmpty(output)){
+			apiRequestLog.setStatus(0);
+		}
+
+		apiRequestLog.setStatusCode(statusCode);
+		apiRequestLog.setResponseBody(body);
+		apiRequestLog.setLog(output);
+		return apiRequestLog;
 	}
 	
 
@@ -117,7 +118,7 @@ public class HttpClientHandler {
 		RequestBuilder builder = createRequestBuilder();
 		addRequestParams(builder);
 		setHttpEntity(builder);
-		HttpUriRequest request = builder.setUri(httpRequest.getUrl()).build();
+		HttpUriRequest request = builder.setUri(apiRequest.getApiUrl()).build();
 		setHeaders(request);
 		CloseableHttpClient client = createHttpClient();
 		return client.execute(request);
@@ -137,46 +138,49 @@ public class HttpClientHandler {
 	}
 	
 	protected void validResponse(String body, String statusCode) throws Exception {
-		switch (httpRequest.getConditionType()) {
-		case CONTAINS:
-			if (StringUtil.isEmpty(body) || !body.contains(httpRequest.getCondition())) {
-				appendMessage(httpRequest.getUrl() + " doesn't contain "
-						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getCondition()));
+		switch (apiRequest.getConditionType()) {
+		case 1:
+			if (StringUtil.isEmpty(body) || !body.contains(apiRequest.getConditionBody())) {
+				appendMessage(apiRequest.getApiUrl() + " doesn't contain "
+						+ XmlEscapers.xmlContentEscaper().escape(apiRequest.getConditionBody()));
 			}
 			break;
-		case DOESNT_CONTAIN:
-			if (StringUtil.isEmpty(body) || body.contains(httpRequest.getCondition())) {
-				appendMessage(httpRequest.getUrl() + " contains "
-						+ XmlEscapers.xmlContentEscaper().escape(httpRequest.getCondition()));
+		case 2:
+			if (StringUtil.isEmpty(body) || body.contains(apiRequest.getConditionBody())) {
+				appendMessage(apiRequest.getApiUrl() + " contains "
+						+ XmlEscapers.xmlContentEscaper().escape(apiRequest.getConditionBody()));
 			}
 			break;
-		case STATUSCODE:
-			if (!statusCode.equals(httpRequest.getCondition())) {
-				appendMessage("Invalid status: " + httpRequest.getUrl() + " required: " + httpRequest.getCondition() + ", received: " + statusCode);
+		case 3:
+			if (!statusCode.equals(apiRequest.getConditionBody())) {
+				appendMessage("Invalid status: " + apiRequest.getApiUrl() + " required: " + apiRequest.getConditionBody() + ", received: " + statusCode);
 			}
 			break;
 		default:
 			if (!"200".equals(statusCode)) {
-				appendMessage("Invalid status: " + httpRequest.getUrl() + " required: " + 200 + ", received: " + statusCode);
+				appendMessage("Invalid status: " + apiRequest.getApiUrl() + " required: " + 200 + ", received: " + statusCode);
 			}
 		break;
 		}
 		
 	}
 
+
+
 	protected void handleVariables(String body) throws Exception {
 		if(StringUtil.isEmpty(body))return;
-		HashMap<String, String> variables = httpRequest.getVariablesMap();
-		ResultType type = httpRequest.getResultType();
+
+		HashMap<String, String> variables = StrUtils.getStringToMap(apiRequest.getVariables());
+		Integer type = apiRequest.getResultType();
 		if(variables == null || type == null)return;
-		if(type.equals(ResultType.JSON)){
+		if( apiRequest.getResultType()==2){
 			for (String variableName : variables.keySet()) {
 				String variablePath = variables.get(variableName);
 				Object variableValue = JSONPath.read(body, variablePath);
-				this.httpSequenceHandle.setVariables(variableName, variableValue.toString());
+				this.apiRequestHandle.setVariables(variableName, variableValue.toString());
 			}
 			
-		}else if(type.equals(ResultType.XML)){
+		}else if(apiRequest.getResultType()==1){
 			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			org.w3c.dom.Document doc = builder.parse(IOUtils.toInputStream(XmlUtil.replaceChar(body), "UTF-8"));
@@ -188,12 +192,14 @@ public class HttpClientHandler {
 				XPathExpression expr = xpath.compile(variablePath);
 				// TODO Retrieve whole XML fragment
 				String variableValue = expr.evaluate(doc);
-				this.httpSequenceHandle.setVariables(variableName, variableValue);
+				this.apiRequestHandle.setVariables(variableName, variableValue);
 			}
 		}
 		
 	}
-	
+
+	// ----------------		----------------
+
 	
 	public String getOutput() {
 		return output;
@@ -209,7 +215,8 @@ public class HttpClientHandler {
 	}
 	
 	protected void addRequestParams(RequestBuilder builder) {
-		HashMap<String, String> map = httpRequest.getParametersMap();
+		HashMap<String, String> map = StrUtils.getStringToMap(apiRequest.getApiParameters());
+
 		if(map==null || map.size()==0)return;
 		for (String key : map.keySet()) {
 			String val = map.get(key);
@@ -221,7 +228,7 @@ public class HttpClientHandler {
 		if(!val.startsWith("$$")){
 			return val;
 		}else{
-			String result = this.httpSequenceHandle.getVariables(val);
+			String result = this.apiRequestHandle.getVariables(val);
 			return result == null ? val : result;
 		}
 	}
@@ -234,7 +241,7 @@ public class HttpClientHandler {
 	}
 
 	protected void setHeaders(HttpUriRequest request) {
-		HashMap<String, String> map = httpRequest.getHeadersMap();
+		HashMap<String, String> map = StrUtils.getStringToMap(apiRequest.getApiHeaders());
 		if(map==null || map.size()==0)return;
 		for (String key : map.keySet()) {
 			request.addHeader(key, map.get(key));
@@ -252,14 +259,14 @@ public class HttpClientHandler {
 		} else {
 			httpClientBuilder = HttpClients.custom().setDefaultRequestConfig(requestConfig);
 		}
-		if(httpSequenceHandle!=null){
-			httpClientBuilder.setDefaultCookieStore(httpSequenceHandle.cookieStore);
+		if(apiRequestHandle!=null){
+			httpClientBuilder.setDefaultCookieStore(apiRequestHandle.cookieStore);
 		}
 		return httpClientBuilder.build();
 	}
 
 	private RequestConfig requestConfig() {
-		final int maxConnMillSeconds = httpRequest.getMaxConnectionSeconds() * MS_TO_S_UNIT;
+		final int maxConnMillSeconds = apiRequest.getMaxConnectionSeconds() * MS_TO_S_UNIT;
 		return RequestConfig.custom().setSocketTimeout(maxConnMillSeconds).setConnectTimeout(maxConnMillSeconds).build();
 	}
 
@@ -274,19 +281,19 @@ public class HttpClientHandler {
 	}
 
 	protected boolean isHttps() {
-		return httpRequest.getUrl().toLowerCase().startsWith(HTTPS);
+		return apiRequest.getApiUrl().toLowerCase().startsWith(HTTPS);
 	}
 
 	protected RequestBuilder createRequestBuilder() {
-		if (httpRequest.getHttpMethod().equals(HttpMethod.GET)) {
+		if (apiRequest.getApiMethod()==1) {
 			return RequestBuilder.get();
-		} else if (httpRequest.getHttpMethod().equals(HttpMethod.POST)) {
+		} else if (apiRequest.getApiMethod()==3) {
 			return RequestBuilder.post();
-		} else if (httpRequest.getHttpMethod().equals(HttpMethod.HEAD)) {
+		} else if (apiRequest.getApiMethod()==2) {
 			return RequestBuilder.head();
-		} else if (httpRequest.getHttpMethod().equals(HttpMethod.PUT)) {
+		} else if (apiRequest.getApiMethod()==4) {
 			return RequestBuilder.put();
-		} else if (httpRequest.getHttpMethod().equals(HttpMethod.DELETE)) {
+		} else if (apiRequest.getApiMethod()==5) {
 			return RequestBuilder.delete();
 		} else {
 			return null;

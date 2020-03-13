@@ -10,11 +10,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAsync
 @EnableScheduling
-@MapperScan("com.apimonitor.common.mapper")
+@MapperScan("com.apimonitor.httpclient.mapper")
 public class HttpclientApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CommonApplication.class, args);
-		//ThreadManager.getExecutorInstance().execute(new EthereumListenerRunnable());
+		SpringApplication.run(HttpclientApplication.class, args);
+
 	}
 }

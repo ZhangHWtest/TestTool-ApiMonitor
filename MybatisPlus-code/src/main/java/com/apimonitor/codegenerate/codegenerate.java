@@ -24,7 +24,7 @@ public class codegenerate {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://localhost:3306/apimonitor?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://localhost:3306/api_monitor_job?useUnicode=true&useSSL=false&characterEncoding=utf8");
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("Admin_!1");
@@ -32,7 +32,7 @@ public class codegenerate {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.apimonitor.common");  //包名
+        pc.setParent("com.apimonitor.httpclient");  //包名
         pc.setController("controller");
         pc.setEntity("entity");
         pc.setService("service");

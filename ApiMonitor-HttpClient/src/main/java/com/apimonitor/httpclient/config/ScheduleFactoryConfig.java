@@ -1,7 +1,7 @@
 package com.apimonitor.httpclient.config;
 
 
-import com.apimonitor.common.quartz.DynamicSchedulerFactory;
+import com.apimonitor.httpclient.quartz.DynamicSchedulerFactory;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,10 +11,9 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import javax.sql.DataSource;
 
 @Configuration
-//@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
 public class ScheduleFactoryConfig {
 
-    @Value("${scheduler.auto.startup}")
+    @Value("true")
     private boolean schedulerAutoStartup;
 
     @Bean

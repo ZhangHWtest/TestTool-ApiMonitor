@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ApiMonitor-Common" />
+        <module name="ApiMonitor-HttpClient" />
         <module name="ApiMonitor-System" />
         <module name="MybatisPlus-code" />
         <module name="TestTool-ApiMonitor-common" />
@@ -16,6 +17,7 @@
     <bytecodeTargetLevel>
       <module name="apimonitor" target="1.8" />
       <module name="ApiMonitor-Common" target="1.8" />
+      <module name="ApiMonitor-HttpClient" target="1.8" />
       <module name="ApiMonitor-System" target="1.8" />
       <module name="MybatisPlus-code" target="1.8" />
       <module name="TestTool-ApiMonitor" target="1.8" />
@@ -26,6 +28,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="ApiMonitor-Common" options="-parameters" />
+      <module name="ApiMonitor-HttpClient" options="-parameters" />
       <module name="ApiMonitor-System" options="-parameters" />
       <module name="MybatisPlus-code" options="-parameters" />
       <module name="TestTool-ApiMonitor-common" options="-parameters" />
