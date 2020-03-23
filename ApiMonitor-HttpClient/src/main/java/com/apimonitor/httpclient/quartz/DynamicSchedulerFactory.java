@@ -8,6 +8,9 @@ import org.springframework.util.Assert;
 
 import java.util.Date;
 
+/**
+ * @author Shengzhao Li
+ */
 public final class DynamicSchedulerFactory implements InitializingBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamicSchedulerFactory.class);
@@ -24,11 +27,10 @@ public final class DynamicSchedulerFactory implements InitializingBean {
      *
      * @param job DynamicJob
      * @return True is register successful
-     * @throws org.quartz.SchedulerException
+     * @throws SchedulerException
      */
-
     public static boolean registerJob(DynamicJob job) throws SchedulerException {
-        final TriggerKey triggerKey=job.triggerKey();
+        final TriggerKey triggerKey = job.triggerKey();
         if (scheduler.checkExists(triggerKey)) {
             final Trigger trigger = scheduler.getTrigger(triggerKey);
             throw new SchedulerException("Already exist trigger [" + trigger + "] by key [" + triggerKey + "] in Scheduler");
@@ -43,20 +45,18 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         return true;
     }
 
-    /**
-     *Check the job is exist or not
-     * 检查作业是否存在
-     */
-
+    /*
+   * Check the job is exist or not
+   * 检查当前job 是否存在
+   * */
     public static boolean existJob(DynamicJob job) throws SchedulerException {
         final TriggerKey triggerKey = job.triggerKey();
         return scheduler.checkExists(triggerKey);
     }
 
-    /**
-     * Pause exist job
-     *  暂停现有作业
-     */
+    /*
+    * Pause exist job
+    * */
     public static boolean pauseJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
         boolean result = false;
@@ -70,17 +70,17 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         return result;
     }
 
-    /**
-     * Resume exist job
-     * 恢复现有作业
-     */
+
+    /*
+    * Resume exist job
+    * */
     public static boolean resumeJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
         boolean result = false;
+        // 检查是否存在
         if (scheduler.checkExists(triggerKey)) {
             final CronTrigger newTrigger = existJob.cronTrigger();
             final Date date = scheduler.rescheduleJob(triggerKey, newTrigger);
-
             result = true;
             LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey, date);
         } else {
@@ -95,7 +95,7 @@ public final class DynamicSchedulerFactory implements InitializingBean {
      *
      * @param existJob A  DynamicJob which exists in Scheduler
      * @return True is remove successful
-     * @throws org.quartz.SchedulerException
+     * @throws SchedulerException
      */
     public static boolean removeJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
@@ -109,20 +109,15 @@ public final class DynamicSchedulerFactory implements InitializingBean {
     }
 
 
-
     public void setScheduler(Scheduler scheduler) {
         DynamicSchedulerFactory.scheduler = scheduler;
     }
 
-
-
-    /**
-     * 初始动态计划工厂
-     * @throws Exception
-     */
     @Override
     public void afterPropertiesSet() throws Exception {
         Assert.notNull(scheduler, "scheduler is null");
         LOG.info("Initial DynamicSchedulerFactory successful, scheduler instance: {}", scheduler);
     }
+
+
 }

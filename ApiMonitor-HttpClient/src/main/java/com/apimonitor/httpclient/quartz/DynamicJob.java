@@ -4,7 +4,13 @@ import org.quartz.*;
 
 import java.util.Map;
 
+/**
+ * 一个动态的 job 信息
+ *
+ * @author Shengzhao Li
+ */
 public class DynamicJob {
+
 
     //要执行类, 实现Job接口
     private Class<? extends Job> target;
@@ -17,11 +23,17 @@ public class DynamicJob {
     //必须唯一
     private String jobName;
 
+
     private transient TriggerKey triggerKey;
     private transient JobDetail jobDetail;
 
-    public DynamicJob(String jobName){
-        this.jobName=jobName;
+
+    //default
+    public DynamicJob() {
+    }
+
+    public DynamicJob(String jobName) {
+        this.jobName = jobName;
     }
 
     public Class<? extends Job> target() {
@@ -33,11 +45,11 @@ public class DynamicJob {
         return this;
     }
 
+
     public DynamicJob cronExpression(String cronExpression) {
         this.cronExpression = cronExpression;
         return this;
     }
-
 
     public String jobGroup() {
         return jobGroup;
@@ -57,7 +69,6 @@ public class DynamicJob {
         return this;
     }
 
-
     public TriggerKey triggerKey() {
         if (triggerKey == null) {
             triggerKey = TriggerKey.triggerKey(this.jobName, this.jobGroup);
@@ -75,10 +86,10 @@ public class DynamicJob {
     }
 
     /*
-     * 传参数给 执行的 job
-     * 在job中 通过
-     *  context.getMergedJobDataMap().get(key) 获取值
-     * */
+   * 传参数给 执行的 job
+   * 在job中 通过
+   *  context.getMergedJobDataMap().get(key) 获取值
+   * */
     public DynamicJob addJobData(String key, Object value) {
         final JobDetail detail = jobDetail();
         final JobDataMap jobDataMap = detail.getJobDataMap();
@@ -87,10 +98,10 @@ public class DynamicJob {
     }
 
     /*
-     * 传参数给 执行的 job
-     * 在job中 通过
-     *  context.getMergedJobDataMap().get(key) 获取值
-     * */
+   * 传参数给 执行的 job
+   * 在job中 通过
+   *  context.getMergedJobDataMap().get(key) 获取值
+   * */
     public DynamicJob addJobDataMap(Map<String, Object> map) {
         final JobDetail detail = jobDetail();
         final JobDataMap jobDataMap = detail.getJobDataMap();

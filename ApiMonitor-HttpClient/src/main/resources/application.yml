@@ -1,6 +1,17 @@
+#http配置服务
+http:
+  maxTotal: 100 #最大连接数
+  defaultMaxPerRoute : 20 #并发数
+  connectTimeout: 1000 #创建连接的最长时间
+  connectionRequestTimeout: 500 #从连接池中获取到连接的最长时间
+  socketTimeout: 10000 #数据传输的最长时间
+  staleConnectionCheckEnabled: true #提交请求前测试连接是否可用
+
+server:
+  port: 10081
 spring:
   application:
-    name: ApiMonitor-HttpClient
+    name: apiMonitor-httpClient
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,19 +28,11 @@ spring:
       connection-timeout: 30000
       connection-test-query: SELECT 1
 
-server:
-  port: 10082
-  compression:
-    enabled: true
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
-    ##默认情况下，仅会压缩2048字节以上的内容
-    min-response-size: 2048
-
 mybatis-plus:
   # xml
   mapper-locations: classpath:mapper/*Mapper.xml
   # 实体扫描，多个package用逗号或者分号分隔
-  type-aliases-package: com.apimonitor.common.entity
-  configuration:
+  type-aliases-package: com.apimonitor.system.entity
+  #configuration:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

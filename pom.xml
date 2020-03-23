@@ -8,25 +8,45 @@
         <version>2.2.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.apimonitor</groupId>
-    <artifactId>TestTool-ApiMonitor</artifactId>
+    <artifactId>testTool-apiMonitor</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <!-- 父项目的packaging必须为pom -->
     <packaging>pom</packaging>
     <name>ApiMonitor</name>
     <description>所有子项目的父项目</description>
+
     <properties>
         <java.version>1.8</java.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
         <spring-cloud.version>Greenwich.SR5</spring-cloud.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.test.skip>true</maven.test.skip>
+
+        <spring.version>5.2.3.RELEASE</spring.version>
+        <mybatis-spring-boot-starter.version>2.1.1</mybatis-spring-boot-starter.version>
+        <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <slf4j-api.version>1.7.30</slf4j-api.version>
+        <junit.version>4.13</junit.version>
+        <groovy.version>2.5.9</groovy.version>
+
+        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
     </properties>
 
     <!-- 子模块 -->
     <modules>
-        <module>ApiMonitor-System</module>
-        <module>ApiMonitor-Common</module>
-        <module>MybatisPlus-code</module>
-        <module>ApiMonitor-HttpClient</module>
+        <module>apiMonitor-system</module>
+        <module>mybatisPlus-code</module>
+        <module>apiMonitor-httpClient</module>
     </modules>
 
     <dependencyManagement>

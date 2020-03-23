@@ -6,8 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ApiMonitor-Common" />
-        <module name="ApiMonitor-HttpClient" />
+        <module name="apiMonitor-httpClient" />
         <module name="ApiMonitor-System" />
         <module name="MybatisPlus-code" />
         <module name="TestTool-ApiMonitor-common" />
@@ -17,10 +16,14 @@
     <bytecodeTargetLevel>
       <module name="apimonitor" target="1.8" />
       <module name="ApiMonitor-Common" target="1.8" />
+      <module name="apiMonitor-httpClient" target="1.8" />
       <module name="ApiMonitor-HttpClient" target="1.8" />
       <module name="ApiMonitor-System" target="1.8" />
+      <module name="job-admin-demo" target="1.8" />
+      <module name="job-core" target="1.8" />
+      <module name="job-executor" target="1.8" />
       <module name="MybatisPlus-code" target="1.8" />
-      <module name="TestTool-ApiMonitor" target="1.8" />
+      <module name="testtool-apimonitor" target="1.8" />
       <module name="TestTool-ApiMonitor-common" target="1.8" />
       <module name="TestTool-ApiMonitor-system" target="1.8" />
     </bytecodeTargetLevel>
@@ -33,7 +36,11 @@
       <module name="MybatisPlus-code" options="-parameters" />
       <module name="TestTool-ApiMonitor-common" options="-parameters" />
       <module name="TestTool-ApiMonitor-system" options="-parameters" />
+      <module name="apiMonitor-httpClient" options="-parameters" />
       <module name="apimonitor" options="-parameters" />
+      <module name="job-admin-demo" options="-parameters" />
+      <module name="job-core" options="-parameters" />
+      <module name="job-executor" options="-parameters" />
     </option>
   </component>
 </project>

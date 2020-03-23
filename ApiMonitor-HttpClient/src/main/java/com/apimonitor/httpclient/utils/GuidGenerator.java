@@ -2,10 +2,6 @@ package com.apimonitor.httpclient.utils;
 
 import java.util.UUID;
 
-/**
- * 随机生成guid
- */
-
 public abstract class GuidGenerator {
 
 
