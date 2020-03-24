@@ -9,14 +9,13 @@ import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author Shengzhao Li
- */
+
+
 public class DynamicJobManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DynamicJobManager.class);
 
-    private static final String MONITORING_INSTANCE_JOB_NAME_PREFIX = "monitoring-job-";
+    private static final String MONITORING_INSTANCE_JOB_NAME_PREFIX = "monitoring-instance-";
 
 
     public static String generateMonitoringInstanceJobName(String key) {
@@ -32,6 +31,8 @@ public class DynamicJobManager {
     public DynamicJobManager(HttpSequence httpSequence) {
         this.httpSequence = httpSequence;
     }
+
+
 
     /**
      * 判断监控是否启用中

@@ -56,6 +56,7 @@ public final class DynamicSchedulerFactory implements InitializingBean {
 
     /*
     * Pause exist job
+    * 暂停job
     * */
     public static boolean pauseJob(DynamicJob existJob) throws SchedulerException {
         final TriggerKey triggerKey = existJob.triggerKey();
@@ -79,10 +80,13 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         boolean result = false;
         // 检查是否存在
         if (scheduler.checkExists(triggerKey)) {
-            final CronTrigger newTrigger = existJob.cronTrigger();
-            final Date date = scheduler.rescheduleJob(triggerKey, newTrigger);
+            //final CronTrigger newTrigger = existJob.cronTrigger();
+            scheduler.resumeTrigger(triggerKey);
+            //final Date date = scheduler.rescheduleJob(triggerKey, newTrigger);
+            //System.out.println(date);
             result = true;
-            LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey, date);
+            //LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey, date);
+            LOG.debug("Resume exist DynamicJob {}, triggerKey [{}] on [{}] successful", existJob, triggerKey);
         } else {
             LOG.debug("Failed resume exist DynamicJob {}, because not fount triggerKey [{}]", existJob, triggerKey);
         }
@@ -119,5 +123,9 @@ public final class DynamicSchedulerFactory implements InitializingBean {
         LOG.info("Initial DynamicSchedulerFactory successful, scheduler instance: {}", scheduler);
     }
 
+
+    public void getAll(){
+
+    }
 
 }

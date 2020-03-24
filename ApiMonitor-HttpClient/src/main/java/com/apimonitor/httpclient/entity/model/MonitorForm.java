@@ -49,6 +49,10 @@ public class MonitorForm {
      * 所属系统
      */
     private Integer httpSystemId;
+    /**
+     * 系统名称
+     */
+    private String systemName;
 
     /**
      * 名称

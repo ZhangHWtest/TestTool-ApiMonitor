@@ -7,7 +7,6 @@ import java.util.Map;
 /**
  * 一个动态的 job 信息
  *
- * @author Shengzhao Li
  */
 public class DynamicJob {
 

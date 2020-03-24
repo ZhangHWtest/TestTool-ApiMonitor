@@ -104,7 +104,8 @@ public class TbUserController {
                         .or().eq("mobile", findbody.getMes())
                         .or().like("email", findbody.getMes()))
                 .and(findbody.getStatus() != null,wq-> wq.eq("status",findbody.getStatus()))
-                .and(wq-> wq.between("create_time",findbody.getStartTime(),findbody.getEndTime()))).getRecords();
+                .and(wq-> wq.between("create_time",findbody.getStartTime(),findbody.getEndTime())))
+                .getRecords();
 
         List<Object> users = new ArrayList<>();
         Map<String, Object> usersMap = new LinkedHashMap<>();

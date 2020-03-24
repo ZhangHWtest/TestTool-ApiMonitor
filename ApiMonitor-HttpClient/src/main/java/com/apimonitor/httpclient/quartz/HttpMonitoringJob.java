@@ -3,8 +3,11 @@ package com.apimonitor.httpclient.quartz;
 import com.apimonitor.httpclient.context.BeanProvider;
 import com.apimonitor.httpclient.service.HttpRequestService;
 import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Set;
 
 
 /**
@@ -39,9 +42,21 @@ public class HttpMonitoringJob implements Job {
         final JobKey key = context.getJobDetail().getKey();
         LOGGER.debug("*****  Start execute Job [{}]", key);
 
+
         final String jobId = context.getMergedJobDataMap().getString(APPLICATION_INSTANCE_GUID);
         httpRequestService.executeRequest(jobId);
 
         LOGGER.debug("&&&&&  End execute Job [{}]", key);
+        try{
+            Scheduler scheduler=context.getScheduler();
+            Set<JobKey> jobKeySet = scheduler.getJobKeys(GroupMatcher.anyGroup());
+            System.out.println("------------ job"+jobKeySet+"job ------------");
+        }catch (SchedulerException e1){
+            e1.getUnderlyingException();
+        }
+
+
+
+
     }
 }
